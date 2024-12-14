@@ -1,0 +1,43 @@
+<div class="flex w-full justify-between py-4 px-4">
+	<div class="flex-none">
+		Logo
+	</div>
+
+	{% if user.is_authenticated %}
+	<p>
+		Profile Picture
+	</p>
+
+	<a href="{% url 'logout' %}">
+		<button class="btn-primary">
+			Logout
+		</button>
+	</a>
+
+	{% else %}
+	<div>
+		<div class="flex justify-end gap-4">
+			<a href="{% url 'login' %}">
+				<button class="btn-primary">
+					Login
+				</button>
+			</a>
+
+			<a href="{% url 'register' %}">
+				<button class="btn-primary">
+					Register
+				</button>
+			</a>
+		</div>
+
+		<p class="text-xs py-2 text-slate-600">
+			Want to Register as Hotel Owner?
+			<a class="text-amber-700"
+			   href=" {% url 'register_client' %} ">
+				Register now!
+			</a>
+		</p>
+	</div>
+
+	{% endif %}
+</div>

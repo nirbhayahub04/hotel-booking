@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport"
+		  content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+
+	<link href="{% static 'fontawesomefree/css/fontawesome.css' %}"
+		  rel="stylesheet"
+		  type="text/css">
+	<link href="{% static 'fontawesomefree/css/brands.css' %}"
+		  rel="stylesheet"
+		  type="text/css">
+	<link href="{% static 'fontawesomefree/css/solid.css' %}"
+		  rel="stylesheet"
+		  type="text/css">
+
+	<title>
+		{% block title %}
+
+		{% endblock %}
+	</title>
+
+<body class="h-screen w-screen">
+{% block main %}
+
+{% endblock main %}
+</body>
+
+<style type="text/tailwindcss">
+	@layer utilities {
+		.btn-primary {
+			background-color: rgb(251 191 36);
+
+			padding: 8px 16px;
+
+			border: 1px;
+			border-radius: 20px;
+		}
+
+		.btn-primary:hover {
+			background-color: rgb(251 171 36);
+		}
+
+		.btn-primary:active {
+			background-color: rgb(245 158 11);
+		}
+	}
+</style>
+
+
+{% block javascript %}
+{% endblock javascript %}
+
+
+</html>
