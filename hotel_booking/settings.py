@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'fontawesomefree',
 
     'accounts',
+    'hotel',
 ]
 
 MIDDLEWARE = [

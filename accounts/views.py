@@ -1,7 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.utils.datastructures import MultiValueDict, MultiValueDictKeyError
 
 from .forms import LoginForm, UserSignUpForm, ClientSignUpForm
 
@@ -9,6 +8,9 @@ from .forms import LoginForm, UserSignUpForm, ClientSignUpForm
 def login_view( request ):
 	msg = None
 	form = LoginForm( request.POST or None )
+
+	if request.user.is_authenticated:
+		return redirect( "/" )
 
 	if request.method == "POST":
 		if form.is_valid():
@@ -19,6 +21,9 @@ def login_view( request ):
 
 			if user is not None:
 				login( request, user )
+
+				if user.is_superuser:
+					return redirect( "/admin" )
 
 				return redirect( "/" )
 			msg = "Invalid credentials"
@@ -32,10 +37,10 @@ def register_user( request ):
 	msg = None
 	success = False
 
-	if request.method == "POST":
-		if request.user.is_authenticated:
-			return redirect( "/" )
+	if request.user.is_authenticated:
+		return redirect( "/" )
 
+	if request.method == "POST":
 		form = UserSignUpForm( request.POST )
 
 		if form.is_valid():

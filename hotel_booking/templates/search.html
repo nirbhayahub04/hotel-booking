@@ -1,0 +1,17 @@
+{% extends "components/layout.html" %}
+
+{% load static %}
+
+{% block title %}
+Search
+{% endblock %}
+
+{% block content %}
+<div class="mx-16 h-screen">
+	<h1 class="py-8 text-2xl font-bold">
+		Explore Available Hotels
+	</h1>
+	<hr>
+	{{ trips }}
+</div>
+{% endblock content %}

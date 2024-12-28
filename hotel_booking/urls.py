@@ -26,6 +26,8 @@ urlpatterns = [
 	path( 'admin/', admin.site.urls ),
 
 	path( '', include( 'accounts.urls' ) ),
+	path( '', include( 'hotel.urls' ) ),
 
-	path( "", views.index, name = "homepage" )
+	path( "", views.index, name = "homepage" ),
+	path( "about/", views.about, name = "about" ),
 ]
