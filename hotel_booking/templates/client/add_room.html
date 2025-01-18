@@ -1,0 +1,70 @@
+{% extends "client/hotels.html" %}
+
+
+{% block client_dashboard_content %}
+<div class="w-full">
+	<form class="mx-auto border rounded px-8 py-8 sm:px-16 sm:px-16 sm:mx-16"
+		method="POST"
+	>
+		<div class="text-center font-bold text-4xl mb-8">
+			Adding Room
+		</div>
+		{% csrf_token %}
+
+		<div class="mb-4 sm:flex gap-8">
+			<div class="w-full">
+				<div>Room Number</div>
+				{{ form.room_number }}
+
+				{% if form.room_number.error %}
+				<span class="text-red-400">{{ form.room_number.error }}</span>
+				{% endif %}
+			</div>
+			<div class="w-full">
+				<div>Type</div>
+				{{ form.room_type }}
+
+				{% if form.room_type.error %}
+				<span class="text-red-400">{{ form.room_type.error }}</span>
+				{% endif %}
+			</div>
+		</div>
+		<div class="mb-4 sm:flex gap-8">
+			<div class="w-full">
+				<div>Capacity</div>
+				{{ form.capacity }}
+
+				{% if form.capacity.error %}
+				<span class="text-red-400">{{ form.capacity.error }}</span>
+				{% endif %}
+			</div>
+			<div class="w-full">
+				<div>Price</div>
+				{{ form.price }}
+
+				{% if form.price.error %}
+				<span class="text-red-400">{{ form.price.error }}</span>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="mb-4">
+			<div>Image</div>
+			{{ form.image }}
+
+			{% if form.image.error %}
+			<span class="text-red-400">{{ form.image.error }}</span>
+			{% endif %}
+		</div>
+
+		<div class="text-center">
+			<button class="btn-primary"
+				type="submit"
+			>Add Room
+			</button>
+		</div>
+	</form>
+
+</div>
+
+{% endblock client_dashboard_content %}

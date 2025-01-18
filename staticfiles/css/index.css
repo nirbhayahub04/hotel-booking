@@ -1,0 +1,38 @@
+.btn-primary {
+	background-color: rgb(251 191 36);
+
+	padding: 8px 16px;
+
+	border: 1px;
+	border-radius: 20px;
+
+	transition: all 0.2s;
+}
+
+.btn-primary:hover {
+	background-color: rgb(251 171 36);
+}
+
+.btn-primary:active {
+	background-color: rgb(245 158 11);
+}
+
+.hover-link {
+	text-decoration: none;
+	position: relative;
+}
+
+.hover-link::after {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 1px;
+	bottom: 0;
+	left: 0;
+	background-color: currentColor;
+	transition: width 0.2s ease-out;
+}
+
+.hover-link:hover::after {
+	width: 100%;
+}

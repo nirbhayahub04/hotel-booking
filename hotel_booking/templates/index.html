@@ -8,7 +8,7 @@ Homepage
 
 {% block content %}
 
-<div class="w-full">
+<div class="">
 	<div class="w-full h-md bg-[url('/staticfiles/img/hotel1.jpg')]
 				bg-scroll bg-center bg-cover bg-no-repeat bg-blend-darken"
 	>
@@ -26,7 +26,9 @@ Homepage
 						id="search-button"
 						href="{% url 'search' %}"
 					>
-						<i class="fa-solid fa-magnifying-glass"></i>
+						<i
+							class="fa-solid fa-magnifying-glass hover:text-slate-600 transition"
+						></i>
 					</a>
 				</div>
 			</div>

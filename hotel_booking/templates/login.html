@@ -5,79 +5,87 @@ Login
 {% endblock %}
 
 {% block main %}
-<div class = "flex items-center justify-center h-screen">
-	<div class = "px-24 py-12 border rounded-md">
-		<div class = "mx-auto w-full max-w">
-			<h1 class = "mt-10 text-center text-2xl font-bold leading-9
-						tracking-tight text-gray-900">
+<div class="flex items-center justify-center h-screen">
+	<div class="px-24 py-12 border rounded-md">
+		<div class="mx-auto w-full max-w">
+			<h1 class="mt-10 text-center text-2xl font-bold leading-9
+						tracking-tight text-gray-900"
+			>
 				Welcome!!
 			</h1>
 			{% if msg %}
-			<div class = "text-red-700 text-center">
+			<div class="text-red-700 text-center">
 				{{ msg }}
 			</div>
 			{% endif %}
 		</div>
 
-		<div class = "mt-10 mx-auto w-full max-w-sm">
-			<form class = "space-y-4"
-				  method = "POST">
+		<div class="mt-10 mx-auto w-full max-w-sm">
+			<form class="space-y-4"
+				method="POST"
+			>
 				{% csrf_token %}
 				<div>
-					<label for = "username"
-						   class = "block text-sm font-medium leading-6
-						   			text-gray-900">
+					<label for="username"
+						class="block text-sm font-medium leading-6
+						   			text-gray-900"
+					>
 						Username
 					</label>
-					<div class = "mt-2">
+					<div class="mt-2">
 						{{ form.username }}
-						<div class = "text-red-700">
+						<div class="text-red-700">
 							{{ form.username.errors }}
 						</div>
 					</div>
 				</div>
 
 				<div>
-					<div class = "flex items-center justify-between">
-						<label for = "password"
-							   class = "block text-sm font-medium leading-6
-							   			text-gray-900">
+					<div class="flex items-center justify-between">
+						<label for="password"
+							class="block text-sm font-medium leading-6
+							   			text-gray-900"
+						>
 							Password
 						</label>
-						<div class = "text-sm">
-							<a href = ""
-							   class = "font-semibold text-amber-600
-							   			hover:text-amber-400">
+						<div class="text-sm">
+							<a href=""
+								class="font-semibold text-amber-600
+							   			hover:text-amber-400 transition"
+							>
 								Forgot password?
 							</a>
 						</div>
 					</div>
-					<div class = "mt-2">
+					<div class="mt-2">
 						{{ form.password }}
-						<div class = "text-red-700">
+						<div class="text-red-700">
 							{{ form.password.errors }}
 						</div>
 					</div>
 				</div>
 
-				<div class = "text-center">
-					<button type = "submit"
-							class = "btn-primary">Sign in
+				<div class="text-center">
+					<button type="submit"
+						class="btn-primary"
+					>Sign in
 					</button>
 				</div>
 			</form>
 
-			<p class = "mt-10 text-center text-sm text-gray-500">
+			<p class="mt-10 text-center text-sm text-gray-500">
 				Want to Signup?
-				<a href = "{% url 'register' %}"
-				   class = "font-semibold leading-6 text-amber-600
-				   			hover:text-amber-400">
+				<a href="{% url 'register' %}"
+					class="font-semibold leading-6 text-amber-600
+				   			hover:text-amber-400 transition"
+				>
 					Register Now
 				</a>
 			</p>
-			<a href = "/"
-			   class = "mt-2 text-sm block text-center font-semibold
-			   			leading-6 text-amber-600 hover:text-amber-400">
+			<a href="/"
+				class="mt-2 text-sm block text-center font-semibold
+			   			leading-6 text-amber-600 hover:text-amber-400 transition"
+			>
 				Back to homepage
 			</a>
 		</div>
