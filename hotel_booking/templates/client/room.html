@@ -1,0 +1,115 @@
+{% extends "client/layouts/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+	<div class="row">
+		<div class="col-12">
+			<div class="card mb-4">
+				<div class="card-header pb-0 d-flex justify-content-between">
+					<h6>Rooms</h6>
+					<a href="{% url 'room' %}">
+						<h6
+							class="badge bg-gradient-success"
+						>
+							Add +
+						</h6>
+					</a>
+				</div>
+				<div class="card-body px-0 pt-0 pb-2">
+					<div class="table-responsive p-0">
+						{% if empty %}
+						<div>
+							<p class="text-center">No Room Available</p>
+						</div>
+						{% else %}
+						<table class="table align-items-center mb-0">
+							<thead>
+							<tr>
+								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+									Room Number
+								</th>
+								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+									Room Type
+								</th>
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+									Capacity
+								</th>
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+									Price / night
+								</th>
+								<th class="text-secondary opacity-7"></th>
+								<th class="text-secondary opacity-7"></th>
+							</tr>
+							</thead>
+							<tbody>
+							{% for room in rooms %}
+							<tr>
+								<td>
+									<div class="d-flex px-2 py-1">
+										<i
+											class="fa-solid fa-diamond p-3"
+											alt="user1"
+										></i>
+										<div class="d-flex flex-column justify-content-center">
+											<h6 class="mb-0 text-sm">
+												Room {{ room.room_number}}
+											</h6>
+										</div>
+									</div>
+								</td>
+								<td>
+									<p
+										class="text-xs font-weight-bold mb-0 badge
+												bg-gradient-danger"
+									>
+										{{ room.room_type }}
+									</p>
+								</td>
+								<td class="align-middle text-center text-sm">
+									<span
+										class="badge badge-sm bg-gradient-info"
+									>
+										{{ room.capacity }}
+									</span>
+								</td>
+								<td class="align-middle text-center">
+									<span
+										class="text-secondary text-xs font-weight-bold
+												badge bg-gradient-secondary text-black-50"
+									>
+										Rs. {{ room.price }}
+									</span>
+								</td>
+								<td class="align-middle">
+									<a href="javascript:;"
+										class="text-secondary font-weight-bold text-xs"
+										data-toggle="tooltip"
+										data-original-title="Edit user"
+									>
+										Edit
+									</a>
+								</td>
+								<td class="align-middle">
+									<a
+										href="{% url 'delete_room' id=room.id %}"
+										class="text-danger font-weight-bold text-xs"
+										data-toggle="tooltip"
+										data-original-title="Edit user"
+									>
+										Delete
+									</a>
+								</td>
+							</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

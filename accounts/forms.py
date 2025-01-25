@@ -6,9 +6,9 @@ from .models import CustomUser
 
 class LoginForm( forms.Form ):
 	username = forms.CharField(
-		required = True,
-		widget = forms.TextInput(
-			attrs = {
+		required=True,
+		widget=forms.TextInput(
+			attrs={
 				"placeholder": "Username",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -20,9 +20,9 @@ class LoginForm( forms.Form ):
 	)
 
 	password = forms.CharField(
-		required = True,
-		widget = forms.PasswordInput(
-			attrs = {
+		required=True,
+		widget=forms.PasswordInput(
+			attrs={
 				"placeholder": "Password",
 				"class": "block w-full rounded-md border-0 \
                         py-1.5 text-gray-900 shadow-sm ring-1 \
@@ -38,9 +38,9 @@ class LoginForm( forms.Form ):
 
 class UserSignUpForm( UserCreationForm ):
 	first_name = forms.CharField(
-		required = True,
-		widget = forms.TextInput(
-			attrs = {
+		required=True,
+		widget=forms.TextInput(
+			attrs={
 				"placeholder": "First Name",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -51,9 +51,9 @@ class UserSignUpForm( UserCreationForm ):
 		)
 	)
 	last_name = forms.CharField(
-		required = True,
-		widget = forms.TextInput(
-			attrs = {
+		required=True,
+		widget=forms.TextInput(
+			attrs={
 				"placeholder": "Last Name",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -64,9 +64,9 @@ class UserSignUpForm( UserCreationForm ):
 		)
 	)
 	email = forms.EmailField(
-		required = True,
-		widget = forms.EmailInput(
-			attrs = {
+		required=True,
+		widget=forms.EmailInput(
+			attrs={
 				"placeholder": "Email",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -77,9 +77,9 @@ class UserSignUpForm( UserCreationForm ):
 		)
 	)
 	phone_number = forms.CharField(
-		required = True,
-		widget = forms.TextInput(
-			attrs = {
+		required=True,
+		widget=forms.TextInput(
+			attrs={
 				"placeholder": "Phone Number",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -90,9 +90,9 @@ class UserSignUpForm( UserCreationForm ):
 		)
 	)
 	username = forms.CharField(
-		required = True,
-		widget = forms.TextInput(
-			attrs = {
+		required=True,
+		widget=forms.TextInput(
+			attrs={
 				"placeholder": "Username",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -103,9 +103,9 @@ class UserSignUpForm( UserCreationForm ):
 		)
 	)
 	address = forms.CharField(
-		required = False,
-		widget = forms.TextInput(
-			attrs = {
+		required=False,
+		widget=forms.TextInput(
+			attrs={
 				"placeholder": "Address",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -116,9 +116,9 @@ class UserSignUpForm( UserCreationForm ):
 		)
 	)
 	password1 = forms.CharField(
-		required = True,
-		widget = forms.PasswordInput(
-			attrs = {
+		required=True,
+		widget=forms.PasswordInput(
+			attrs={
 				"placeholder": "Password",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -129,9 +129,9 @@ class UserSignUpForm( UserCreationForm ):
 		)
 	)
 	password2 = forms.CharField(
-		required = True,
-		widget = forms.PasswordInput(
-			attrs = {
+		required=True,
+		widget=forms.PasswordInput(
+			attrs={
 				"placeholder": "Confirm Password",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -142,20 +142,19 @@ class UserSignUpForm( UserCreationForm ):
 		)
 	)
 
-	role = 'customer'
 
 	class Meta:
 		model = CustomUser
 		fields = ('first_name', 'last_name', 'address', 'username',
 		          'email', 'phone_number', 'password1', 'password2',
-		          'role')
+		          )
 
 
 class ClientSignUpForm( UserCreationForm ):
 	first_name = forms.CharField(
-		required = True,
-		widget = forms.TextInput(
-			attrs = {
+		required=True,
+		widget=forms.TextInput(
+			attrs={
 				"placeholder": "First Name",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -166,9 +165,9 @@ class ClientSignUpForm( UserCreationForm ):
 		)
 	)
 	last_name = forms.CharField(
-		required = True,
-		widget = forms.TextInput(
-			attrs = {
+		required=True,
+		widget=forms.TextInput(
+			attrs={
 				"placeholder": "Last Name",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -179,9 +178,9 @@ class ClientSignUpForm( UserCreationForm ):
 		)
 	)
 	email = forms.EmailField(
-		required = True,
-		widget = forms.EmailInput(
-			attrs = {
+		required=True,
+		widget=forms.EmailInput(
+			attrs={
 				"placeholder": "Email",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -192,9 +191,9 @@ class ClientSignUpForm( UserCreationForm ):
 		)
 	)
 	phone_number = forms.CharField(
-		required = True,
-		widget = forms.TextInput(
-			attrs = {
+		required=True,
+		widget=forms.TextInput(
+			attrs={
 				"placeholder": "Phone Number",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -205,9 +204,9 @@ class ClientSignUpForm( UserCreationForm ):
 		)
 	)
 	username = forms.CharField(
-		required = True,
-		widget = forms.TextInput(
-			attrs = {
+		required=True,
+		widget=forms.TextInput(
+			attrs={
 				"placeholder": "Username",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -218,9 +217,9 @@ class ClientSignUpForm( UserCreationForm ):
 		)
 	)
 	address = forms.CharField(
-		required = False,
-		widget = forms.TextInput(
-			attrs = {
+		required=False,
+		widget=forms.TextInput(
+			attrs={
 				"placeholder": "Address",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -231,9 +230,9 @@ class ClientSignUpForm( UserCreationForm ):
 		)
 	)
 	password1 = forms.CharField(
-		required = True,
-		widget = forms.PasswordInput(
-			attrs = {
+		required=True,
+		widget=forms.PasswordInput(
+			attrs={
 				"placeholder": "Password",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -244,9 +243,9 @@ class ClientSignUpForm( UserCreationForm ):
 		)
 	)
 	password2 = forms.CharField(
-		required = True,
-		widget = forms.PasswordInput(
-			attrs = {
+		required=True,
+		widget=forms.PasswordInput(
+			attrs={
 				"placeholder": "Confirm Password",
 				"class": "ring-1 ring-inset ring-gray-300 \
                             placeholder:text-gray-40block w-full \
@@ -256,6 +255,7 @@ class ClientSignUpForm( UserCreationForm ):
 			}
 		)
 	)
+
 
 	class Meta:
 		model = CustomUser

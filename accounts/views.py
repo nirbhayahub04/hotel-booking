@@ -45,13 +45,14 @@ def register_user( request ):
 
 		if form.is_valid():
 			user = form.save(commit = False)
-			user.role = "customer"
 			user.save()
 
 			msg = "User created successfully."
 			success = True
 
 			return redirect( "login" )
+
+		print(form.errors)
 
 		msg = "Form is not valid"
 	else:
@@ -73,7 +74,6 @@ def register_hotel_owner( request ):
 			return redirect( "/" )
 
 		form = ClientSignUpForm( request.POST )
-		print( form.errors )
 
 		if form.is_valid():
 			user = form.save( commit = False )

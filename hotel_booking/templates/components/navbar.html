@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="flex w-full justify-between items-center py-10 px-8 sm:px-16">
+<div class="flex w-full justify-between items-center py-8 px-8 sm:px-16">
 	<a href="/"
 		class="flex-none"
 	>
@@ -12,13 +12,13 @@
 	</a>
 	<div class="flex flex-col items-end">
 		<div class="flex gap-4 items-center justify-between">
-			<span class="hidden sm:block">
+			<span class="hidden sm:flex gap-6">
 				<a class="hover-link"
 					href="/"
 				>Home</a>
 				<a class="hover-link"
-					href="{% url 'search' %}"
-				>Search</a>
+					href="{% url 'explore' %}"
+				>Explore</a>
 				<a
 					class="hover-link"
 					href="{% url 'about' %}"
@@ -27,46 +27,44 @@
 			{% if user.is_authenticated %}
 
 			<div class="relative">
-				<button onclick="toggle_dropdown()"
-					class="bg-amber-400 flex gap-4 items-center border rounded-full p-4 transition hover:bg-amber-300 active:bg-amber-400"
+				<button onclick="toggleDropdown()"
+					class="bg-amber-400 flex gap-2 items-center border rounded-full p-4 transition hover:bg-amber-300 active:bg-amber-400"
 				>
-					<img src="#"
-						class=""
-						alt="{{ user.username }}"
+					<img src="{% static 'img/default-avatar.png' %}"
+						class="w-8 h-8 rounded-full"
 					>
+					<span>{{ user.username }}</span>
 					<i class="fa-solid fa-caret-down"></i>
 				</button>
 				<!-- Dropdown Menu -->
 				<div id="profile-dropdown"
 					class="hidden absolute right-0 mt-3 w-48 bg-white border
-								rounded-lg shadow-md"
+								rounded-lg shadow-md z-10"
 				>
 					<ul class="py-2 text-gray-700">
 						<li>
-							<a href="#"
+							<a href=""
 								class="block px-4 py-2 transition hover:bg-amber-400"
 							>
 								Profile
 							</a>
 						</li>
 						<li>
-							<a href="#"
+							<a href=""
 								class="block px-4 py-2 transition hover:bg-amber-400"
 							>
 								Settings
 							</a>
 						</li>
-
 						{% if user.role == "client" %}
 						<li>
-							<a href="{% url 'rooms' %}"
+							<a href="{% url 'client-dashboard' %}"
 								class="block px-4 py-2 transition hover:bg-amber-400"
 							>
-								Your Hotels
+								Dashboard
 							</a>
 						</li>
 						{% endif %}
-
 						<li>
 							<hr class="my-1">
 						</li>
@@ -88,8 +86,6 @@
 					Login
 				</button>
 			</a>
-
-
 			<a href="{% url 'register' %}">
 				<button class="btn-primary">
 					Register
@@ -103,7 +99,7 @@
 		<span class="text-xs mt-2 text-slate-600">
 			Want to Register as Hotel Owner?
 			<a class="hover-link text-amber-700 inline-block"
-				href=" {% url 'register_client' %} "
+				href="{% url 'register_client' %}"
 			>
 				Register now!
 			</a>
@@ -115,16 +111,17 @@
 
 {% block javascript %}
 <script>
-	var toggle_dropdown = () => {
-		let dropdown = document.getElementById("profile-dropdown");
+	function toggleDropdown() {
+		const dropdown = document.getElementById("profile-dropdown");
 		dropdown.classList.toggle("hidden");
-    };
+	}
 
-	document.addEventListener("click", function (event) {
-		let dropdown = document.getElementById("profile-dropdown");
-		let button = document.querySelector("button[onclick='toggle_dropdown()']");
+	document.addEventListener("click", (event) => {
+		const dropdown = document.getElementById("profile-dropdown");
+		const button = document.querySelector("button[onclick='toggleDropdown()']");
 
-		if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+		if (dropdown && dropdown.classList.contains("hidden") === false &&
+			!dropdown.contains(event.target) && !button.contains(event.target)) {
 			dropdown.classList.add("hidden");
 		}
 	});

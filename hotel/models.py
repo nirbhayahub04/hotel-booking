@@ -7,7 +7,9 @@ import accounts.models
 class HotelModel( models.Model ):
 	name = models.CharField( max_length=100 )
 	address = models.CharField( max_length=100 )
-	image = models.ImageField( upload_to='images/hotels' )
+	image = models.ImageField( upload_to='images/hotels',
+	                           default='images/hotels/default.jpg'
+	                           )
 	description = models.TextField()
 	rating = models.FloatField()
 	no_of_rooms = models.IntegerField()
@@ -25,7 +27,9 @@ class RoomModel( models.Model ):
 	hotel = models.ForeignKey( HotelModel, on_delete=models.CASCADE )
 	room_type = models.CharField( max_length=50 )
 	price = models.IntegerField()
-	image = models.ImageField( upload_to='images/rooms' )
+	image = models.ImageField( upload_to='images/rooms',
+	                           default='images/rooms/default.jpg'
+	                           )
 	capacity = models.IntegerField()
 	is_available = models.BooleanField( default=True )
 

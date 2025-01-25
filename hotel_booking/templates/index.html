@@ -8,26 +8,31 @@ Homepage
 
 {% block content %}
 
-<div class="">
-	<div class="w-full h-md bg-[url('/staticfiles/img/hotel1.jpg')]
-				bg-scroll bg-center bg-cover bg-no-repeat bg-blend-darken"
+<div>
+	<div class="w-full h-md bg-[url('/staticfiles/img/hotel1.jpg')] bg-scroll
+				bg-center bg-cover bg-no-repeat bg-blend-darken"
 	>
-		<div class="h-full bg-slate-900/75">
-			<div class="px-48 py-28">
-				<div class="font-bold text-white text-2xl text-center mb-8">
-					Search
-				</div>
-				<div class="flex justify-center">
-					<input class="border rounded-full sm:w-2/4 md:1/4"
+		<div class="h-full bg-slate-900/75 flex items-center justify-center">
+			<div class="text-center px-10 sm:px-20 py-16">
+				<h1 class="font-bold text-white text-3xl lg:text-4xl mb-6">
+					Find Your Perfect Stay
+				</h1>
+				<div class="flex justify-center items-center gap-4">
+					<input
+						class="w-2/3 border rounded-full px-4 py-2
+								focus:outline-none"
 						type="text"
 						id="search-bar"
+						placeholder="Search for rooms or hotels..."
 					>
-					<a class="text-black ml-[-32px] flex items-center"
+					<a
+						class="text-black flex items-center justify-center w-10
+								h-10 bg-white rounded-full hover:bg-gray-300 transition"
 						id="search-button"
 						href="{% url 'search' %}"
 					>
-						<i
-							class="fa-solid fa-magnifying-glass hover:text-slate-600 transition"
+						<i class="fa-solid fa-magnifying-glass hover:text-slate-600
+									transition"
 						></i>
 					</a>
 				</div>
@@ -35,7 +40,118 @@ Homepage
 		</div>
 	</div>
 
-	<div class="flex flex-col w-full px-48 py-16 items-end">
+	<div class="p-8 w-full sm:px-20 lg:px-48 sm:py-16">
+		<section class="mb-12">
+			<h2 class="font-bold text-3xl mb-6 text-gray-800 text-center sm:text-left">
+				Explore Available Rooms
+			</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				{% for room in rooms %}
+				<div class="shadow-lg hover:shadow-xl transition-transform
+							transform hover:scale-105 bg-white rounded-lg
+							overflow-hidden"
+				>
+					<img
+						src="{{ room.image.url }}"
+						alt="Image of Hotel Room"
+						class="w-full h-48 object-cover"
+					>
+					<div class="p-6">
+						<p class="font-semibold text-lg text-gray-800 mb-2">
+							Room Number: {{ room.room_number }}
+						</p>
+						<p class="text-gray-600 mb-1">
+							Hotel:
+							<span class="font-medium text-gray-800">
+								{{ room.hotel.name }}
+							</span>
+						</p>
+						<p class="text-gray-600 mb-1">
+							Capacity: {{ room.capacity }} persons
+						</p>
+						<p class="text-green-700 font-bold text-lg">
+							Price: ${{ room.price }} per night
+						</p>
+					</div>
+					<div class="p-4 text-right">
+						<a
+							href=""
+							class="btn-primary px-4 py-2 inline-block rounded-full
+									text-white bg-blue-600 hover:bg-blue-700 transition"
+						>
+							Book Now
+						</a>
+					</div>
+				</div>
+				{% empty %}
+				<p class="text-gray-500 col-span-full text-center">
+					No available rooms found.
+				</p>
+				{% endfor %}
+			</div>
+			<div class="text-center mt-8">
+				<a
+					href=""
+					class="btn-primary px-4 py-2 inline-block rounded-full
+							text-white bg-gray-700 hover:bg-gray-800 transition"
+				>
+					Explore More
+				</a>
+			</div>
+		</section>
+
+		<section>
+			<h2 class="font-bold text-3xl mb-6 text-gray-800 text-center sm:text-left">
+				Explore By Hotels
+			</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				{% for hotel in hotels %}
+				<div class="shadow-lg hover:shadow-xl transition-transform
+							transform hover:scale-105 bg-white rounded-lg
+							overflow-hidden"
+				>
+					<img
+						src="{{ hotel.image.url }}"
+						alt="Image of Hotel"
+						class="w-full h-48 object-cover"
+					>
+					<div class="p-6">
+						<h3 class="font-semibold text-lg text-gray-800 mb-2">
+							{{ hotel.name }}
+						</h3>
+						<p class="text-gray-600 mb-2">
+							{{ hotel.address }}
+						</p>
+						<p class="text-gray-600">
+							{{ hotel.description }}
+						</p>
+					</div>
+					<div class="p-4 text-right">
+						<a href=""
+							class="btn-primary px-4 py-2 inline-block rounded-full
+									text-white bg-blue-600 hover:bg-blue-700
+									transition"
+						>
+							Explore
+						</a>
+					</div>
+				</div>
+				{% empty %}
+				<p class="text-gray-500 col-span-full text-center">
+					No hotels found.
+				</p>
+				{% endfor %}
+			</div>
+			<div class="text-center mt-8">
+				<a
+					href=""
+					class="btn-primary px-4 py-2 inline-block rounded-full
+							text-white bg-gray-700 hover:bg-gray-800 transition"
+				>
+					Explore More Hotels
+				</a>
+			</div>
+		</section>
 	</div>
 </div>
 

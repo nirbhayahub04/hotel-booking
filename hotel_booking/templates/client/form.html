@@ -1,0 +1,37 @@
+{% extends "client/layouts/base.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<link rel="stylesheet"
+	type="text/css"
+	href="{% static 'assets/css/forms.css' %}"
+>
+{% endblock %}
+
+{% block content %}
+<form class="container-fluid py-4"
+	method="post"
+>
+	{% csrf_token %}
+	<div class="card px-4 py-4">
+		<div class="card-body">
+			<h5 class="mb-4">Add {{ name }}</h5>
+			{{ form.as_p }}
+		</div>
+	</div>
+
+	<div class=" submit_btn text-center">
+		<a href="{% url 'hotel_room' %}"
+			class="btn btn-sm btn-default"
+		>
+			Close
+		</a>
+		<button type="submit"
+			name="_save"
+			class="btn btn-sm btn-primary"
+		>
+			Save
+		</button>
+	</div>
+</form>
+{% endblock content %}

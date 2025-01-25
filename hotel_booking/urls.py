@@ -20,6 +20,7 @@ from django.urls import path, include
 
 from . import views, settings
 
+
 urlpatterns = [
 	path( "__reload__/", include( "django_browser_reload.urls" ) ),
 
@@ -27,7 +28,13 @@ urlpatterns = [
 
 	path( '', include( 'accounts.urls' ) ),
 	path( '', include( 'hotel.urls' ) ),
+	path( '', include( 'client.urls' ) ),
 
-	path( "", views.index, name = "homepage" ),
-	path( "about/", views.about, name = "about" ),
+	path( "", views.index, name="homepage" ),
+	path( "about/", views.about, name="about" ),
+	path( "explore", views.explore, name="explore")
 ]
+
+urlpatterns += static( settings.MEDIA_URL,
+                       document_root=settings.MEDIA_ROOT
+                       )
