@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
+from hotel.models import HotelModel
+
 from .models import CustomUser
 
 
@@ -262,3 +264,75 @@ class ClientSignUpForm( UserCreationForm ):
 		fields = ('first_name', 'last_name', 'address', 'username',
 		          'email', 'phone_number', 'password1', 'password2',
 		          )
+
+
+class HotelSignUpForm(forms.ModelForm):
+    name = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Hotel Name",
+                "class": "ring-1 ring-inset ring-gray-300 \
+                            placeholder:text-gray-40block w-full \
+                            rounded-md border-0 py-1.5 text-gray-900 \
+                            shadow-sm 0 focus:ring-2 focus:ring-inset \
+                            focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            }
+        )
+    )
+    address = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Address",
+                "class": "ring-1 ring-inset ring-gray-300 \
+                            placeholder:text-gray-40block w-full \
+                            rounded-md border-0 py-1.5 text-gray-900 \
+                            shadow-sm 0 focus:ring-2 focus:ring-inset \
+                            focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            }
+        )
+    )
+    description = forms.CharField(
+        required=True,
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": "Description",
+                "class": "ring-1 ring-inset ring-gray-300 \
+                            placeholder:text-gray-40block w-full \
+                            rounded-md border-0 py-1.5 text-gray-900 \
+                            shadow-sm 0 focus:ring-2 focus:ring-inset \
+                            focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            }
+        )
+    )
+    no_of_rooms = forms.IntegerField(
+        required=True,
+        widget=forms.NumberInput(
+            attrs={
+                "placeholder": "Number of Rooms",
+                "class": "ring-1 ring-inset ring-gray-300 \
+                            placeholder:text-gray-40block w-full \
+                            rounded-md border-0 py-1.5 text-gray-900 \
+                            shadow-sm 0 focus:ring-2 focus:ring-inset \
+                            focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            }
+        )
+    )
+    image = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(
+            attrs={
+                "class": "ring-1 ring-inset ring-gray-300 \
+                            placeholder:text-gray-40block w-full \
+                            rounded-md border-0 py-1.5 text-gray-900 \
+                            shadow-sm 0 focus:ring-2 focus:ring-inset \
+                            focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            }
+        )
+    )
+
+    class Meta:
+        model = HotelModel
+        fields = ['name', 'address', 'description', 'image', 'no_of_rooms']
+

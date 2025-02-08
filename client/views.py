@@ -2,7 +2,6 @@ from tkinter.font import names
 
 from django.shortcuts import render, redirect
 
-from accounts.views import register_user
 from hotel.models import HotelModel, RoomModel
 from hotel.forms import RoomForm
 
@@ -27,7 +26,8 @@ def billing( request ):
 
 @client_or_superuser_required
 def profile( request ):
-	return render( request, "client/profile.html" )
+    hotel = HotelModel.objects.filter( owner=request.user ).first()
+    return render( request, "client/profile.html", { "hotel": hotel } )
 
 
 @client_or_superuser_required
@@ -71,6 +71,24 @@ def get_rooms( request ):
 			"rooms": rooms,
 			"empty": is_empty
 		}
+	)
+
+
+@client_or_superuser_required
+def edit_room( request, id ):
+	room = RoomModel.objects.get( id=id )
+	form = RoomForm( instance=room )
+
+	if request.method == "POST":
+		form = RoomForm( request.POST, instance=room )
+		if form.is_valid():
+			form.save()
+			return redirect( "hotel_room" )
+
+	return render(
+		request,
+		"client/form.html",
+		{ "form": form, "name": "Room" }
 	)
 
 

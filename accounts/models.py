@@ -4,29 +4,27 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class CustomUser( AbstractUser ):
-	ROLE_CHOICES = (
-		('admin', 'Admin'),
-		('client', 'Client'),
-		('customer', 'Customer'),
-	)
+class CustomUser(AbstractUser):
+    ROLE_CHOICES = (
+        ("admin", "Admin"),
+        ("client", "Client"),
+        ("customer", "Customer"),
+    )
 
-	role = models.CharField( max_length=10, default='customer' )
+    role = models.CharField(max_length=10, default="customer")
 
-	email = models.EmailField( unique=True )
-	phone_number = models.CharField( max_length=15, blank=True,
-	                                 null=True
-	                                 )
-	dob = models.DateField( blank=False, default=date( 1111, 1, 1 ) )
-	address = models.TextField( blank=True, null=True, max_length=50,
-	                            default=""
-	                            )
-	password = models.CharField( max_length=255 )
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    dob = models.DateField(blank=False, default=date(1111, 1, 1))
+    address = models.TextField(blank=True, null=True, max_length=50, default="")
+    profile_picture = models.ImageField(
+        upload_to="images/profile",
+        default="images/profile/default-avatar.png",
+    )
+    password = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.username
 
-	def __str__( self ):
-		return self.username
-
-
-	def full_name( self ):
-		return self.first_name + " " + self.last_name
+    def full_name(self):
+        return self.first_name + " " + self.last_name

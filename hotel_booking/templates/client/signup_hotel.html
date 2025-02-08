@@ -1,0 +1,128 @@
+{% extends "_base.html" %}
+
+{% block title %}
+Register
+{% endblock title %}
+
+
+{% block main %}
+
+<div class="flex flex-col items-center justify-center px-6 py-12 h-screen">
+	<div class="px-24 py-12 border rounded-md">
+		<div class="">
+			<h1 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+				Fillup Hotel Details
+			</h1>
+		</div>
+
+		<div class="mt-10 mx-auto max-w">
+			<form class="space-y-4"
+				method="POST"
+			>
+				{% csrf_token %}
+
+				<div class="flex gap-4">
+					<div class="w-full">
+						<label for="fname"
+							class="block text-sm font-medium leading-6 text-gray-900"
+						>
+							Hotel Name
+						</label>
+						<div class="mt-2">
+							{{ form.name }}
+							<div class="text-red-700">
+								{{ form.name.errors }}
+							</div>
+						</div>
+					</div>
+
+					<div class="w-full">
+						<label for="lname"
+							class="block text-sm font-medium leading-6 text-gray-900"
+						>
+							Address
+						</label>
+						<div class="mt-2">
+							{{ form.address }}
+							<div class="text-red-700">
+								{{ form.address.errors }}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="flex items-center justify-between">
+						<label for="pnumber"
+							class="block text-sm font-medium leading-6 text-gray-900"
+						>
+							Number of Rooms
+						</label>
+					</div>
+					<div class="mt-2">
+						{{ form.no_of_rooms }}
+						<div class="text-red-700">
+							{{ form.no_of_rooms.errors }}
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<div class="flex items-center justify-between">
+						<label for="pnumber"
+							class="block text-sm font-medium leading-6 text-gray-900"
+						>
+							Description
+						</label>
+					</div>
+					<div class="mt-2">
+						{{ form.description }}
+						<div class="text-red-700">
+							{{ form.description.errors }}
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<div class="flex items-center justify-between">
+						<label for="password"
+							class="block text-sm font-medium leading-6 text-gray-900"
+						>
+							Hotel Image
+						</label>
+					</div>
+					<div class="mt-2">
+						{{ form.image }}
+						<div class="text-red-700">
+							{{ form.image.errors }}
+						</div>
+					</div>
+				</div>
+
+				<div class="text-center">
+					<button type="submit"
+						class="btn-primary"
+					>Register
+					</button>
+				</div>
+			</form>
+
+			<p class="mt-10 text-center text-sm text-gray-500">
+				Have an Account?
+				<a href="{% url 'login' %}"
+					class="font-semibold leading-6 text-amber-600
+				   hover:text-amber-400 transition"
+				>
+					Login
+				</a>
+			</p>
+			<a href="/"
+				class="mt-2 text-sm block text-center font-semibold leading-6
+			   text-amber-600 hover:text-amber-400 transition"
+			>
+				Back to homepage
+			</a>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

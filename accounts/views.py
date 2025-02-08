@@ -2,7 +2,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
-from .forms import LoginForm, UserSignUpForm, ClientSignUpForm
+from hotel.models import HotelModel
+
+from .forms import HotelSignUpForm, LoginForm, UserSignUpForm, ClientSignUpForm
 
 
 def login_view( request ):
@@ -24,6 +26,12 @@ def login_view( request ):
 
 				if user.is_superuser:
 					return redirect( "/admin" )
+
+				if user.role == "client":
+					if HotelModel.objects.filter( owner = user ).exists():
+						return redirect( "/" )
+					else:
+						return redirect( "register_hotel" )
 
 				return redirect( "/" )
 			msg = "Invalid credentials"
@@ -83,7 +91,7 @@ def register_hotel_owner( request ):
 			msg = "User created successfully."
 			success = True
 
-			return redirect( "login" )
+			return redirect( "register_hotel" )
 
 		msg = "Form is not valid"
 	else:
@@ -100,3 +108,35 @@ def register_hotel_owner( request ):
 def logout_user( request ):
 	logout( request )
 	return redirect( "/" )
+
+
+@login_required()
+def register_hotel( request ):
+	msg = None
+	success = False
+
+	if request.user.role != "client":
+		return redirect( "/" )
+
+	if request.method == "POST":
+		form = HotelSignUpForm( request.POST, request.FILES )
+
+		if form.is_valid():
+			hotel = form.save(commit = False)
+			hotel.owner = request.user
+			hotel.save()
+   
+			msg = "Hotel created successfully."
+			success = True
+
+			return redirect( "/" )
+
+		msg = "Form is not valid"
+	else:
+		form = HotelSignUpForm()
+
+	return render(
+		request,
+		"client/signup_hotel.html",
+		{ "form": form, "msg": msg, "success": success },
+	)
