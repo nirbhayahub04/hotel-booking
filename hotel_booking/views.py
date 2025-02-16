@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 from hotel import models as hotelModel
 
@@ -33,3 +34,8 @@ def explore( request ):
 			"rooms": rooms
 		}
 	)
+
+
+@login_required( login_url = "/login/" )
+def settings( request ):
+	return render( request, "accounts/settings.html" )

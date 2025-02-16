@@ -7,136 +7,151 @@ from hotel.models import HotelModel
 from .forms import HotelSignUpForm, LoginForm, UserSignUpForm, ClientSignUpForm
 
 
-def login_view( request ):
-	msg = None
-	form = LoginForm( request.POST or None )
+def login_view(request):
+    msg = None
+    form = LoginForm(request.POST or None)
 
-	if request.user.is_authenticated:
-		return redirect( "/" )
+    if request.user.is_authenticated:
+        return redirect("/")
 
-	if request.method == "POST":
-		if form.is_valid():
-			username = form.cleaned_data.get( "username" )
-			password = form.cleaned_data.get( "password" )
+    if request.method == "POST":
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
 
-			user = authenticate( username = username, password = password )
+            user = authenticate(username=username, password=password)
 
-			if user is not None:
-				login( request, user )
+            if user is not None:
+                login(request, user)
 
-				if user.is_superuser:
-					return redirect( "/admin" )
+                if user.is_superuser:
+                    return redirect("/admin")
 
-				if user.role == "client":
-					if HotelModel.objects.filter( owner = user ).exists():
-						return redirect( "/" )
-					else:
-						return redirect( "register_hotel" )
+                if user.role == "client":
+                    if HotelModel.objects.filter(owner=user).exists():
+                        return redirect("/")
+                    else:
+                        return redirect("register_hotel")
 
-				return redirect( "/" )
-			msg = "Invalid credentials"
-		else:
-			msg = "Error validating the form"
+                return redirect("/")
+            msg = "Invalid credentials"
+        else:
+            msg = "Error validating the form"
 
-	return render( request, "login.html", { "form": form, "msg": msg } )
-
-
-def register_user( request ):
-	msg = None
-	success = False
-
-	if request.user.is_authenticated:
-		return redirect( "/" )
-
-	if request.method == "POST":
-		form = UserSignUpForm( request.POST )
-
-		if form.is_valid():
-			user = form.save(commit = False)
-			user.save()
-
-			msg = "User created successfully."
-			success = True
-
-			return redirect( "login" )
-
-		print(form.errors)
-
-		msg = "Form is not valid"
-	else:
-		form = UserSignUpForm()
-
-	return render(
-		request,
-		"register.html",
-		{ "form": form, "msg": msg, "success": success },
-	)
+    return render(request, "accounts/login.html", {"form": form, "msg": msg})
 
 
-def register_hotel_owner( request ):
-	msg = None
-	success = False
+def register_user(request):
+    msg = None
+    success = False
 
-	if request.method == "POST":
-		if request.user.is_authenticated:
-			return redirect( "/" )
+    if request.user.is_authenticated:
+        return redirect("/")
 
-		form = ClientSignUpForm( request.POST )
+    if request.method == "POST":
+        form = UserSignUpForm(request.POST)
 
-		if form.is_valid():
-			user = form.save( commit = False )
-			user.role = "client"
-			user.save()
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
 
-			msg = "User created successfully."
-			success = True
+            msg = "User created successfully."
+            success = True
 
-			return redirect( "register_hotel" )
+            return redirect("login")
 
-		msg = "Form is not valid"
-	else:
-		form = ClientSignUpForm()
+        print(form.errors)
 
-	return render(
-		request,
-		"client/register.html",
-		{ "form": form, "msg": msg, "success": success },
-	)
+        msg = "Form is not valid"
+    else:
+        form = UserSignUpForm()
+
+    return render(
+        request,
+        "accounts/register.html",
+        {"form": form, "msg": msg, "success": success},
+    )
 
 
-@login_required()
-def logout_user( request ):
-	logout( request )
-	return redirect( "/" )
+def register_hotel_owner(request):
+    msg = None
+    success = False
+
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            return redirect("/")
+
+        form = ClientSignUpForm(request.POST)
+
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.role = "client"
+            user.save()
+
+            msg = "User created successfully."
+            success = True
+
+            return redirect("register_hotel")
+
+        msg = "Form is not valid"
+    else:
+        form = ClientSignUpForm()
+
+    return render(
+        request,
+        "client/register.html",
+        {"form": form, "msg": msg, "success": success},
+    )
 
 
 @login_required()
-def register_hotel( request ):
-	msg = None
-	success = False
+def logout_user(request):
+    logout(request)
+    return redirect("/")
 
-	if request.user.role != "client":
-		return redirect( "/" )
 
-	if request.method == "POST":
-		form = HotelSignUpForm( request.POST, request.FILES )
+@login_required()
+def register_hotel(request):
+    msg = None
+    success = False
 
-		if form.is_valid():
-			hotel = form.save(commit = False)
-			hotel.owner = request.user
-			hotel.save()
-   
-			msg = "Hotel created successfully."
-			success = True
+    if request.user.role != "client":
+        return redirect("/")
 
-			return redirect( "/" )
+    if request.method == "POST":
+        form = HotelSignUpForm(request.POST, request.FILES)
 
-		msg = "Form is not valid"
-	else:
-		form = HotelSignUpForm()
+        if form.is_valid():
+            hotel = form.save(commit=False)
+            hotel.owner = request.user
+            hotel.save()
 
-	return render(
-		request,
-		"client/signup_hotel.html",
-		{ "form": form, "msg": msg, "success": success },
-	)
+            msg = "Hotel created successfully."
+            success = True
+
+            return redirect("/")
+
+        msg = "Form is not valid"
+    else:
+        form = HotelSignUpForm()
+
+    return render(
+        request,
+        "client/signup_hotel.html",
+        {"form": form, "msg": msg, "success": success},
+    )
+
+
+@login_required(login_url="/login/")
+def delete_account(request):
+    if (
+        request.user.role == "customer"
+        and request.user.is_authenticated
+        and request.user.is_active
+        and not request.user.is_superuser
+    ):
+        if request.method == "POST":
+            request.user.delete()
+            return redirect("logout")
+
+    return render(request, "accounts/settings.html")

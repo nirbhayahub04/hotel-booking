@@ -50,7 +50,7 @@
 							</a>
 						</li>
 						<li>
-							<a href=""
+							<a href="{% url "settings" %}"
 								class="block px-4 py-2 transition hover:bg-amber-400"
 							>
 								Settings
@@ -62,6 +62,14 @@
 								class="block px-4 py-2 transition hover:bg-amber-400"
 							>
 								Dashboard
+							</a>
+						</li>
+						{% else %}
+						<li>
+							<a href="{% url "reservations" %}"
+								class="block px-4 py-2 transition hover:bg-amber-400"
+							>
+								Reservations
 							</a>
 						</li>
 						{% endif %}

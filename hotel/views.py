@@ -1,3 +1,5 @@
+import datetime
+import re
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
@@ -69,3 +71,65 @@ def room(request):
         )
 
     return render(request, "404.html")
+
+
+@login_required(login_url="/login/")
+def book_room(request, room_id):
+    if request.user.role == "client":
+        return redirect("/")
+    
+    if request.method == "POST":
+        room = models.RoomModel.objects.get(id=room_id)
+        reservation = models.ReservationModel(
+            reserved_by=request.user,
+            check_in_date=request.POST["check_in"],
+            check_out_date=request.POST["check_out"],
+            room=room,
+        )
+        reservation.save()
+
+        return redirect("/")
+    elif request.method == "GET":
+        room = models.RoomModel.objects.all().filter(id=room_id).first()
+        return render(request, "booking.html", {"room": room})
+
+
+@login_required(login_url="/login/")
+def reservations(request):
+    if request.user.role == "client":
+        return redirect("/")
+
+    reservations = models.ReservationModel.objects.all().filter(reserved_by=request.user)
+
+    past_reservations = []
+    upcoming_reservations = []
+    
+    today = datetime.date.today()
+    
+    for reservation in reservations:
+        if reservation.check_out_date < today:
+            past_reservations.append(reservation)
+        else:
+            upcoming_reservations.append(reservation)
+
+    print(upcoming_reservations)
+
+    return render(request, "accounts/reservations.html", {
+        "past_reservations": past_reservations,
+        "upcoming_reservations": upcoming_reservations
+    })
+
+
+@login_required(login_url="/login/")
+def cancel_reservation(request, reservation_id):
+    if request.user.role == "client":
+        return redirect("/")
+
+    reservation = models.ReservationModel.objects.get(id=reservation_id)
+
+    if reservation:
+        if reservation.reserved_by == request.user:
+            reservation.delete()
+            return redirect("/reservations")
+
+    return redirect("/reservations/")

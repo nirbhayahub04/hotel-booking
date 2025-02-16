@@ -38,7 +38,6 @@ class ReservationModel(models.Model):
     reserved_by = models.ForeignKey(
         accounts.models.CustomUser, on_delete=models.CASCADE
     )
-    no_of_guests = models.IntegerField()
     check_in_date = models.DateField()
     check_out_date = models.DateField()
     room = models.ForeignKey(RoomModel, on_delete=models.CASCADE)
