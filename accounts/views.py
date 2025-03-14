@@ -1,10 +1,16 @@
+from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
-from hotel.models import HotelModel
+from hotel.models import Hotel
 
-from .forms import HotelSignUpForm, LoginForm, UserSignUpForm, ClientSignUpForm
+from .forms import (
+    HotelSignUpForm,
+    LoginForm,
+    UserSignUpForm,
+    ClientSignUpForm,
+)
 
 
 def login_view(request):
@@ -28,10 +34,9 @@ def login_view(request):
                     return redirect("/admin")
 
                 if user.role == "client":
-                    if HotelModel.objects.filter(owner=user).exists():
+                    if Hotel.objects.filter(owner=user).exists():
                         return redirect("/")
-                    else:
-                        return redirect("register_hotel")
+                    return redirect("register_hotel")
 
                 return redirect("/")
             msg = "Invalid credentials"
@@ -60,8 +65,6 @@ def register_user(request):
 
             return redirect("login")
 
-        print(form.errors)
-
         msg = "Form is not valid"
     else:
         form = UserSignUpForm()
@@ -77,10 +80,10 @@ def register_hotel_owner(request):
     msg = None
     success = False
 
-    if request.method == "POST":
-        if request.user.is_authenticated:
-            return redirect("/")
+    if request.user.is_authenticated:
+        return redirect("/")
 
+    if request.method == "POST":
         form = ClientSignUpForm(request.POST)
 
         if form.is_valid():
@@ -91,7 +94,13 @@ def register_hotel_owner(request):
             msg = "User created successfully."
             success = True
 
-            return redirect("register_hotel")
+            # Authenticate and login the user
+            user = authenticate(
+                username=user.username, password=form.cleaned_data["password1"]
+            )
+            if user is not None:
+                login(request, user)
+                return redirect("hotel_signup")
 
         msg = "Form is not valid"
     else:
@@ -104,13 +113,13 @@ def register_hotel_owner(request):
     )
 
 
-@login_required()
+@login_required(login_url="/login")
 def logout_user(request):
     logout(request)
     return redirect("/")
 
 
-@login_required()
+@login_required(login_url="/login")
 def register_hotel(request):
     msg = None
     success = False

@@ -2,30 +2,60 @@
 {% load i18n static extra_tags %}
 {% get_current_language as LANGUAGE_CODE %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
-{% get_admin_setting as admin_setting %}
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}"
+      dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
+    <head>
+        <title>
+            {% block title %}
+                Hotel Booking Dashboard
+            {% endblock title %}
+        </title>
+        <meta name="description"
+              content="Hotel Booking Management System - Manage your hotel operations efficiently">
+        <meta name="keywords"
+              content="hotel, booking, management, dashboard, reservations">
+        {% include "client/includes/head.html" %}
+    </head>
+    <body class="min-h-screen bg-gray-100 flex flex-col">
+        <!-- Mobile Sidebar Overlay -->
+        <div id="sidebar-overlay"
+             class="fixed inset-0 z-40 bg-black/50 lg:hidden hidden"></div>
+        <div class="flex flex-1">
+            {% include "client/includes/sidebar.html" %}
+            <div class="flex flex-col flex-1">
+                {% include "client/includes/navigation.html" %}
+                <main class="flex-1 p-6 lg:p-8 transition-all duration-300">
+                    <div class="max-w-7xl mx-auto">
+                        {% block content %}
+                        {% endblock content %}
+                    </div>
+                </main>
+            </div>
+        </div>
+        <script>
+            // Mobile sidebar toggle
+            function toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                sidebar.classList.toggle('-translate-x-full');
+                overlay.classList.toggle('hidden');
+                
+                // Store state in localStorage
+                const isOpen = !sidebar.classList.contains('-translate-x-full');
+                localStorage.setItem('sidebarOpen', isOpen);
+            }
 
-<head>
-	{% include "client/includes/head.html" %}
-	{% block extrastyle %}{% endblock extrastyle %}
-	{% block extrahead %}{% endblock extrahead %}
-</head>
+            // Close sidebar on overlay click
+            document.getElementById('sidebar-overlay').addEventListener('click', toggleSidebar);
 
-<body class="g-sidenav-show  bg-gray-100">
-{% block sidebar %}
-{% include "client/includes/sidebar.html" %}
-{% endblock sidebar %}
-
-<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-	{% block navigation %}
-	{% include "client/includes/navigation.html" %}
-	{% endblock navigation %}
-
-	{% block content %}{% endblock content %}
-</main>
-
-{% include "client/includes/scripts.html" %}
-{% block extra_js %}{% endblock extra_js %}
-</body>
-
+            // Initialize sidebar state
+            document.addEventListener('DOMContentLoaded', () => {
+                const sidebar = document.getElementById('sidebar');
+                const shouldOpen = localStorage.getItem('sidebarOpen') === 'true';
+                if (shouldOpen) sidebar.classList.remove('-translate-x-full');
+            });
+        </script>
+    </body>
 </html>
+{% block javascript %}
+{% endblock javascript %}

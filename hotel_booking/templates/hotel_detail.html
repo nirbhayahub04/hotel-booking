@@ -1,0 +1,384 @@
+{% extends "components/layout.html" %}
+{% load static hotel_tags %}
+{% block title %}
+    {{ hotel.hotel_name }}
+{% endblock title %}
+{% block content %}
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Hotel Header -->
+        <div class="mb-8 rounded-2xl overflow-hidden shadow-2xl relative group">
+            <div class="relative h-96">
+                <!-- Main Image Slider -->
+                <div class="swiper mainImageSlider h-full">
+                    <div class="swiper-wrapper">
+                        {% for image in hotel_images %}
+                            <div class="swiper-slide cursor-zoom-in">
+                                <img src="{{ image.image.url }}"
+                                     alt="{{ hotel.hotel_name }} - Image {{ forloop.counter }}"
+                                     class="w-full h-full object-cover"
+                                     @click="openLightbox({{ forloop.counter0 }})">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Gradient Overlay & Content -->
+                <div class="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-black/30 to-transparent">
+                    <div class="absolute bottom-8 left-8 max-w-2xl">
+                        <h1 class="text-5xl font-bold text-white mb-4">{{ hotel.hotel_name }}</h1>
+                        <div class="flex items-center space-x-4 text-white/90">
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>{{ hotel.address }}, {{ hotel.city }}, {{ hotel.state }}, {{ hotel.country }}</span>
+                            </div>
+                            {% if hotel.star_rating %}
+                                <div class="flex items-center">
+                                    <i class="fas fa-star mr-2"></i>
+                                    <span>{{ hotel.star_rating }} Stars</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Thumbnail Gallery -->
+        <div class="container mx-auto px-4 mb-8">
+            <div class="swiper thumbnailSlider">
+                <div class="swiper-wrapper !justify-start">
+                    {% for image in hotel_images %}
+                        <div class="swiper-slide !w-32 !h-20 cursor-pointer group">
+                            <div class="w-full h-full rounded-lg overflow-hidden border-2 border-transparent group-hover:border-amber-400 transition-all duration-200">
+                                <img src="{{ image.image.url }}"
+                                     alt="Thumbnail {{ forloop.counter }}"
+                                     class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- Lightbox Popup -->
+        <div class="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-xl hidden"
+             id="lightbox">
+            <button class="absolute top-6 right-6 text-white/80 hover:text-white z-50"
+                    onclick="closeLightbox()">
+                <i class="fas fa-times text-3xl"></i>
+            </button>
+            <div class="swiper lightboxSlider h-full w-full">
+                <div class="swiper-wrapper">
+                    {% for image in hotel_images %}
+                        <div class="swiper-slide">
+                            <div class="flex items-center justify-center h-full p-4">
+                                <img src="{{ image.image.url }}"
+                                     alt="Fullscreen view - {{ hotel.hotel_name }}"
+                                     class="max-h-full max-w-full object-contain">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Hotel Details -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">About {{ hotel.hotel_name }}</h2>
+                    <div class="prose max-w-none">{{ hotel.description|safe }}</div>
+                    <!-- Amenities Section -->
+                    {% if hotel.amenities %}
+                        <div class="mt-8">
+                            <h3 class="text-xl font-semibold mb-4">Amenities</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                {% for amenity in hotel.amenities|split:"," %}
+                                    <div class="flex items-center space-x-2 text-gray-600">
+                                        <i class="fas fa-check-circle text-amber-500"></i>
+                                        <span>{{ amenity|title }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <!-- Contact Information -->
+                    <div class="mt-8 grid grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
+                            <div class="space-y-2">
+                                {% if hotel.phone_number %}
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-phone text-amber-500"></i>
+                                        <span>{{ hotel.phone_number }}</span>
+                                    </div>
+                                {% endif %}
+                                {% if hotel.email %}
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-envelope text-amber-500"></i>
+                                        <span>{{ hotel.email }}</span>
+                                    </div>
+                                {% endif %}
+                                {% if hotel.website %}
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-globe text-amber-500"></i>
+                                        <a href="{{ hotel.website }}" class="hover:text-amber-600">{{ hotel.website }}</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- Check-in/out Times -->
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Check-in/Check-out</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span>Check-in:</span>
+                                    <span class="font-medium">{{ hotel.check_in_time|time:"H:i" }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Check-out:</span>
+                                    <span class="font-medium">{{ hotel.check_out_time|time:"H:i" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Location Details -->
+                    <div class="mt-8">
+                        <h3 class="text-xl font-semibold mb-4">Location Details</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-gray-600">Postal Code: {{ hotel.postal_code }}</p>
+                                {% if hotel.latitude and hotel.longitude %}
+                                    <p class="text-gray-600 mt-2">Coordinates: {{ hotel.latitude|floatformat:4 }}, {{ hotel.longitude|floatformat:4 }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sidebar Information -->
+            <div class="lg:col-span-1">
+                <div class="sticky top-8 space-y-6">
+                    <!-- Hotel Status -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4">Hotel Status</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class="{% if hotel.is_active %}text-green-500{% else %}text-red-500{% endif %}">
+                                <i class="fas fa-circle"></i>
+                            </span>
+                            <span>
+                                {% if hotel.is_active %}
+                                    Active
+                                {% else %}
+                                    Inactive
+                                {% endif %}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">
+                            Created: {{ hotel.creation_date|date:"M d, Y" }}
+                            <br>
+                            Last Updated: {{ hotel.last_updated|date:"M d, Y" }}
+                        </p>
+                    </div>
+                    <!-- Owner Information -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4">Property Owner</h3>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-user-circle text-3xl text-gray-400"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">{{ hotel.owner.get_full_name }}</p>
+                                <p class="text-sm text-gray-500">{{ hotel.owner.email }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Rooms Listing -->
+                    <div class="lg:col-span-1">
+                        <div class="sticky top-8 space-y-8">
+                            <!-- Room Filters -->
+                            <div class="bg-white rounded-2xl shadow-lg p-6">
+                                <h3 class="text-xl font-semibold mb-4">Filter Rooms</h3>
+                                <!-- Add filter components here -->
+                            </div>
+                            <!-- Rooms List -->
+                            <div class="space-y-6">
+                                {% for room in rooms %}
+                                    <article class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all overflow-hidden">
+                                        <img src="{{ room.image.url }}"
+                                             alt="{{ room.room_type }}"
+                                             class="w-full h-48 object-cover">
+                                        <div class="p-6">
+                                            <div class="flex justify-between items-start mb-4">
+                                                <div>
+                                                    <h3 class="text-xl font-semibold">Room {{ room.room_id }}</h3>
+                                                    <p class="text-gray-500">{{ room.room_type }}</p>
+                                                </div>
+                                                <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm">{{ room.max_occupancy }} Guests</span>
+                                            </div>
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="text-2xl font-bold text-amber-600">${{ room.base_price }}</p>
+                                                    <span class="text-sm text-gray-500">per night</span>
+                                                </div>
+                                                <div class="space-x-3">
+                                                    <a href="{% url 'get_room_detail' room.room_id %}"
+                                                       class="px-4 py-2 text-gray-600 hover:text-amber-600 transition-colors">
+                                                        Details
+                                                    </a>
+                                                    <a href="{% url 'book_room' room.room_id %}"
+                                                       class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors">
+                                                        Book Now
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                {% empty %}
+                                    <div class="text-center p-8 bg-white rounded-2xl border-2 border-dashed border-gray-200">
+                                        <i class="fas fa-bed text-4xl text-gray-300 mb-4"></i>
+                                        <p class="text-gray-500">No available rooms at this time</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Related Hotels -->
+        <section class="mt-24">
+            <div class="mb-8 text-center">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Similar Hotels</h2>
+                <p class="text-gray-500">Discover other properties you might like</p>
+            </div>
+            <div class="swiper related-hotels">
+                <div class="swiper-wrapper">
+                    {% for related_hotel in related_hotels %}
+                        <div class="swiper-slide">
+                            <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all h-full">
+                                <img src="{{ related_hotel.images.first.image.url }}"
+                                     alt="{{ related_hotel.hotel_name }}"
+                                     class="w-full h-48 object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-semibold mb-2">{{ related_hotel.hotel_name }}</h3>
+                                    <div class="flex items-center gap-2 mb-4">
+                                        <div class="flex items-center gap-1 text-amber-500">
+                                            {% for _ in "12345" %}
+                                                <i class="fas fa-star {% if forloop.counter > related_hotel.star_rating %}text-gray-300{% endif %}"></i>
+                                            {% endfor %}
+                                        </div>
+                                        <span class="text-sm text-gray-500">({{ related_hotel.review_count }} reviews)</span>
+                                    </div>
+                                    <div class="flex justify-between items-end">
+                                        <div class="space-y-1">
+                                            <p class="text-2xl font-bold text-amber-600">${{ related_hotel.min_price }}</p>
+                                            <span class="text-sm text-gray-500">per night</span>
+                                        </div>
+                                        <a href="{% url 'hotel_detail' related_hotel.hotel_id %}"
+                                           class="px-4 py-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors">
+                                            View Hotel
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-button-next !text-amber-600"></div>
+                <div class="swiper-button-prev !text-amber-600"></div>
+            </div>
+        </section>
+    </div>
+    <style>
+    .prose {
+        line-height: 1.75;
+    }
+    .prose p {
+        margin-bottom: 1.5rem;
+    }
+    .swiper-slide {
+        transition: transform 0.3s ease;
+    }
+    .swiper-slide-active {
+        transform: scale(1) !important;
+    }
+    /* Thumbnail hover effects */
+    .swiper-slide-thumb-active {
+        opacity: 1 !important;
+        border-color: theme('colors.amber.400') !important;
+    }
+
+    /* Lightbox styling */
+    #lightbox {
+        transition: opacity 0.3s ease;
+    }
+
+    #lightbox .swiper-slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Z-index fix */
+    .swiper-lightbox {
+        z-index: 9999 !important;
+    }
+    </style>
+{% endblock content %}
+{% block javascript %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainSlider = new Swiper('.mainImageSlider', {
+                loop: true,
+                autoHeight: true
+            });
+        
+            new Swiper('.thumbnailSlider', {
+                slidesPerView: 'auto',
+                spaceBetween: 8,
+                freeMode: true
+            });
+
+            // Add click handlers to thumbnails
+            document.querySelectorAll('.thumbnailSlider .swiper-slide').forEach((slide, index) => {
+                slide.addEventListener('click', () => {
+                    openLightbox(index);
+                });
+            });
+        
+            let lightboxSwiper = null;
+            window.openLightbox = (index) => {
+                const lightbox = document.getElementById('lightbox');
+                lightbox.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+        
+                if (!lightboxSwiper) {
+                    lightboxSwiper = new Swiper('.lightboxSlider', {
+                        initialSlide: index,
+                        loop: true,
+                        keyboard: true,
+                        navigation: {
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev',
+                        },
+                    });
+                } else {
+                    lightboxSwiper.slideTo(index);
+                }
+            };
+        
+            window.closeLightbox = () => {
+                document.getElementById('lightbox').classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            };
+        
+            document.getElementById('lightbox').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('lightbox')) {
+                    closeLightbox();
+                }
+            });
+        
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeLightbox();
+            });
+        });
+    </script>
+{% endblock javascript %}

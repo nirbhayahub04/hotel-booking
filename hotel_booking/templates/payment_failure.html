@@ -1,0 +1,65 @@
+{% extends "_base.html" %}
+{% block main %}
+    <div class="min-h-screen bg-gray-50 py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+                <!-- Decorative stripe -->
+                <div class="h-2 bg-gradient-to-r from-red-500 to-white-500"></div>
+                <div class="p-8 sm:p-12">
+                    <!-- Animated cross mark -->
+                    <div class="mx-auto mb-8 w-24 h-24 bg-red-50 rounded-full flex items-center justify-center animate-pop-in">
+                        <svg class="w-16 h-16 text-red-600"
+                             fill="none"
+                             stroke="currentColor"
+                             viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg"
+                             stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </div>
+                    <!-- Main content -->
+                    <div class="text-center space-y-6">
+                        <h1 class="text-4xl font-bold text-gray-900 tracking-tight">Payment Failed 😔</h1>
+                        <div class="space-y-4">
+                            <p class="text-xl text-gray-600">We're sorry, but your payment could not be processed.</p>
+                            <!-- Error message -->
+                            <div class="mt-8 bg-gray-50 rounded-lg p-6 text-left space-y-4">
+                                <p class="text-gray-600">Possible reasons for failure:</p>
+                                <ul class="list-disc pl-6 text-gray-500">
+                                    <li>Insufficient funds in your account</li>
+                                    <li>Incorrect payment details entered</li>
+                                    <li>Network connectivity issues</li>
+                                    <li>Payment gateway timeout</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Action buttons -->
+                        <a href="{% url 'homepage' %}"
+                           class="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 transition-all duration-200 transform hover:-translate-y-1 shadow-lg hover:shadow-xl">
+                            <i class="fas fa-home mr-3 text-lg"></i>
+                            Home Page
+                        </a>
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <p class="text-gray-600">Need help? Contact our support team:</p>
+                            <a href="#"
+                               class="text-red-600 hover:text-red-700 font-medium flex items-center justify-center mt-2">
+                                <i class="fas fa-headset mr-2"></i>
+                                Payment Support
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+    @keyframes pop-in {
+        0% { transform: scale(0.5); opacity: 0; }
+        80% { transform: scale(1.1); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop-in {
+        animation: pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    </style>
+{% endblock main %}

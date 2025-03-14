@@ -1,0 +1,205 @@
+{% extends "components/layout.html" %}
+{% load static hotel_tags %}
+{% block title %}
+    {{ room.get_room_type_display }} - {{ hotel.hotel_name }}
+{% endblock title %}
+{% block content %}
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Room Header -->
+        <div class="mb-8 rounded-2xl overflow-hidden shadow-2xl relative group">
+            <div class="relative h-96">
+                <!-- Main Image -->
+                <div class="w-full h-full">
+                    <img src="{{ room.image.url }}"
+                         alt="{{ room.get_room_type_display }}"
+                         class="w-full h-full object-cover cursor-zoom-in"
+                         @click="openLightbox()">
+                </div>
+                <!-- Gradient Overlay & Content -->
+                <div class="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-black/30 to-transparent">
+                    <div class="absolute bottom-8 left-8 max-w-2xl">
+                        <h1 class="text-5xl font-bold text-white mb-4">{{ room.get_room_type_display }}</h1>
+                        <div class="flex items-center space-x-4 text-white/90">
+                            <div class="flex items-center">
+                                <i class="fas fa-bed mr-2"></i>
+                                <span>Room {{ room.room_id }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-users mr-2"></i>
+                                <span>Max Occupancy: {{ room.max_occupancy }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Lightbox Popup -->
+        <div class="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-xl hidden"
+             id="lightbox">
+            <button class="absolute top-6 right-6 text-white/80 hover:text-white z-50"
+                    onclick="closeLightbox()">
+                <i class="fas fa-times text-3xl"></i>
+            </button>
+            <div class="flex items-center justify-center h-full w-full">
+                <div class="flex items-center justify-center h-full p-4">
+                    <img src="{{ room.image.url }}"
+                         alt="Fullscreen view - {{ room.get_room_type_display }}"
+                         class="max-h-full max-w-full object-contain">
+                </div>
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Room Details -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">About This Room</h2>
+                    <div class="prose max-w-none">{{ room.description|safe }}</div>
+                    <!-- Room Features -->
+                    <div class="mt-8">
+                        <h3 class="text-xl font-semibold mb-4">Room Features</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            {% if room.bed_configuration %}
+                                <div class="flex items-center space-x-2 text-gray-600">
+                                    <i class="fas fa-bed text-amber-500"></i>
+                                    <span>{{ room.bed_configuration }}</span>
+                                </div>
+                            {% endif %}
+                            {% if room.bathroom_type %}
+                                <div class="flex items-center space-x-2 text-gray-600">
+                                    <i class="fas fa-shower text-amber-500"></i>
+                                    <span>{{ room.bathroom_type }} Bathroom</span>
+                                </div>
+                            {% endif %}
+                            {% if room.size %}
+                                <div class="flex items-center space-x-2 text-gray-600">
+                                    <i class="fas fa-expand text-amber-500"></i>
+                                    <span>{{ room.size }}</span>
+                                </div>
+                            {% endif %}
+                            {% if room.view %}
+                                <div class="flex items-center space-x-2 text-gray-600">
+                                    <i class="fas fa-binoculars text-amber-500"></i>
+                                    <span>{{ room.view }} View</span>
+                                </div>
+                            {% endif %}
+                            {% if room.smoking_policy %}
+                                <div class="flex items-center space-x-2 text-gray-600">
+                                    <i class="fas {% if room.smoking_policy == 'NON_SMOKING' %}fa-smoking-ban{% else %}fa-smoking{% endif %} text-amber-500"></i>
+                                    <span>{{ room.get_smoking_policy_display }}</span>
+                                </div>
+                            {% endif %}
+                            {% if room.accessibility_features %}
+                                <div class="flex items-center space-x-2 text-gray-600">
+                                    <i class="fas fa-wheelchair text-amber-500"></i>
+                                    <span>{{ room.accessibility_features }}</span>
+                                </div>
+                            {% endif %}
+                            {% if room.amenities %}
+                                {% for amenity in room.amenities|split:"," %}
+                                    <div class="flex items-center space-x-2 text-gray-600">
+                                        <i class="fas fa-check-circle text-amber-500"></i>
+                                        <span>{{ amenity|title }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Proximity to Facilities -->
+                    {% if room.proximity_to_facilities %}
+                        <div class="mt-8">
+                            <h3 class="text-xl font-semibold mb-4">Facility Proximity</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                {% for facility, distance in room.proximity_to_facilities.items %}
+                                    <div class="flex items-center space-x-2 text-gray-600">
+                                        <i class="fas fa-walking text-amber-500"></i>
+                                        <span>{{ facility }}: {{ distance }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <!-- Pricing Information -->
+                    <div class="mt-8">
+                        <h3 class="text-xl font-semibold mb-4">Pricing</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-4 bg-amber-50 rounded-lg">
+                                <div>
+                                    <p class="text-2xl font-bold text-amber-600">${{ room.base_price }}</p>
+                                    <span class="text-sm text-gray-500">Base price per night</span>
+                                </div>
+                                <a href="{% url 'book_room' room.room_id %}"
+                                   class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors">
+                                    Book Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sidebar Information -->
+            <div class="lg:col-span-1">
+                <div class="sticky top-8 space-y-6">
+                    <!-- Room Status -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4">Room Status</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class=" {% if room.availability_status == 'AVAILABLE' %}text-green-500 {% elif room.availability_status == 'BOOKED' %}text-red-500 {% else %}text-amber-500{% endif %}">
+                                <i class="fas fa-circle"></i>
+                            </span>
+                            <span>{{ room.get_availability_status_display }}</span>
+                        </div>
+                    </div>
+                    <!-- Hotel Information -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4">Hotel Information</h3>
+                        <div class="space-y-4">
+                            <h4 class="font-medium">{{ room.hotel.hotel_name }}</h4>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>{{ room.hotel.address }}, {{ room.hotel.city }}</span>
+                            </div>
+                            {% if room.hotel.star_rating %}
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="fas fa-star mr-2"></i>
+                                    <span>{{ room.hotel.star_rating }} Stars</span>
+                                </div>
+                            {% endif %}
+                            <a href="{% url 'hotel_detail' room.hotel.hotel_id %}"
+                               class="inline-block mt-2 px-4 py-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors">
+                                View Hotel
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block javascript %}
+    <script>
+        function openLightbox() {
+            document.getElementById('lightbox').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Close lightbox when clicking outside the image
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+{% endblock javascript %}

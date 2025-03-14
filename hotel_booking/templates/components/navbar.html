@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="flex w-full justify-between items-center py-8 px-8 sm:px-16">
+<div class="flex w-full justify-between items-center py-8 px-8 sm:px-16 sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-white/20">
 	<a href="/"
 		class="flex-none"
 	>
@@ -38,9 +38,7 @@
 				</button>
 				<!-- Dropdown Menu -->
 				<div id="profile-dropdown"
-					class="hidden absolute right-0 mt-3 w-48 bg-white border
-								rounded-lg shadow-md z-10"
-				>
+				class="hidden absolute right-0 mt-3 w-48 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-md z-10">
 					<ul class="py-2 text-gray-700">
 						<li>
 							<a href=""
@@ -66,7 +64,7 @@
 						</li>
 						{% else %}
 						<li>
-							<a href="{% url "reservations" %}"
+							<a href="{% url "get_bookings" %}"
 								class="block px-4 py-2 transition hover:bg-amber-400"
 							>
 								Reservations

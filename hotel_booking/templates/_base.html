@@ -12,7 +12,6 @@
 		href=" {% static 'img/logo.png' %} "
 	/>
 
-	<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
 
 	<link rel="stylesheet"
 		href="{% static 'css/index.css' %}"
@@ -30,7 +29,14 @@
 		rel="stylesheet"
 		type="text/css"
 	>
-
+	<link
+		rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+	/>
+  
+  	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+  
 	<title>
 		{% block title %}
 
@@ -47,5 +53,8 @@
 {% block javascript %}
 {% endblock javascript %}
 
+
+{% block style %}
+{% endblock style %}
 
 </html>

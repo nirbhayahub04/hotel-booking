@@ -1,0 +1,75 @@
+{% extends "client/hotel_signup/_layout.html" %}
+{% block content %}
+    <form method="post"
+          enctype="multipart/form-data"
+          class="max-w-2xl mx-auto p-6 bg-white rounded-lg">
+        {% csrf_token %}
+        {{ wizard.management_form }}
+        <div class="space-y-4 {% if form.images.errors %}border-l-4 border-red-500 pl-4{% endif %}">
+            <label class="block text-sm font-medium text-gray-700">{{ form.images.label }}</label>
+            <div id="file-inputs" class="space-y-4">
+                <div class="relative group">
+                    <div class="flex items-center gap-2">{{ form.images }}</div>
+                    <div class="image-preview mt-2 flex flex-wrap gap-2"></div>
+                </div>
+            </div>
+            {% if form.images.errors %}
+                <div class="text-sm text-red-600 space-y-1">
+                    {% for error in form.images.errors %}<p>{{ error }}</p>{% endfor %}
+                </div>
+            {% endif %}
+            <p class="text-sm text-gray-500">{{ form.images.help_text }}</p>
+        </div>
+        <button type="submit"
+                class="mt-6 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
+            Finish Registration
+        </button>
+    </form>
+    <script>
+        function validateFile(input) {
+            const file = input.files[0];
+            const maxSize = 5 * 1024 * 1024;
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+            
+            if (!file) return true;
+
+            if (!allowedTypes.includes(file.type)) {
+                alert('Only JPG, PNG, and WEBP images are allowed.');
+                input.value = '';
+                return false;
+            }
+
+            if (file.size > maxSize) {
+                alert('File size must be less than 5MB.');
+                input.value = '';
+                return false;
+            }
+
+            return true;
+        }
+
+        function previewImage(input) {
+            const previewDiv = input.closest('.relative').querySelector('.image-preview');
+            previewDiv.innerHTML = '';
+            
+            if (input.files) {
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'w-48 h-32 object-cover rounded border';
+                        previewDiv.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        document.getElementById('id_images-images').addEventListener('change', function(e) {
+            if (validateFile(e.target)) {
+                previewImage(e.target);
+            }
+        });
+    </script>
+{% endblock content %}

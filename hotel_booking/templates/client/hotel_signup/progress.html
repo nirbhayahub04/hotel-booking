@@ -1,0 +1,9 @@
+<div class="progress">
+    <ul>
+        <li class="{% if wizard.steps.current == 'basic' %}active{% endif %}">Basic Information</li>
+        <li class="{% if wizard.steps.current == 'location' %}active{% endif %}">Location</li>
+        <li class="{% if wizard.steps.current == 'amenities' %}active{% endif %}">Amenities</li>
+        <li class="{% if wizard.steps.current == 'policies' %}active{% endif %}">Policies</li>
+        <li class="{% if wizard.steps.current == 'payment' %}active{% endif %}">Payment</li>
+    </ul>
+</div>

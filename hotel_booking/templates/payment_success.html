@@ -1,0 +1,106 @@
+{% extends "_base.html" %}
+{% block main %}
+    <div class="min-h-screen bg-gray-50 py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+                <!-- Decorative stripe -->
+                <div class="h-2 bg-gradient-to-r from-amber-500 to-white-500"></div>
+                <div class="p-8 sm:p-12">
+                    <!-- Animated checkmark -->
+                    <div class="mx-auto mb-8 w-24 h-24 bg-teal-50 rounded-full flex items-center justify-center animate-pop-in">
+                        <svg class="w-16 h-16 text-teal-600"
+                             fill="none"
+                             stroke="currentColor"
+                             viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg"
+                             stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <!-- Main content -->
+                    <div class="text-center space-y-6">
+                        <h1 class="text-4xl font-bold text-gray-900 tracking-tight">Booking Confirmed! 🎉</h1>
+                        <div class="space-y-4">
+                            <p class="text-xl text-gray-600">
+                                Your stay at <span class="font-semibold text-amber-600">{{ hotel_name }}</span> is confirmed
+                            </p>
+                            <!-- Booking details -->
+                            <div class="mt-8 bg-gray-50 rounded-lg p-6 text-left space-y-4">
+                                <div class="grid grid-cols-2 gap-4 text-sm sm:text-base">
+                                    <div>
+                                        <p class="text-gray-500">Booking Number</p>
+                                        <p class="font-medium text-gray-900">#{{ booking_number }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-500">Dates</p>
+                                        <p class="font-medium text-gray-900">{{ check_in }} – {{ check_out }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-500">Amount Paid</p>
+                                        <p class="font-medium text-white-600">{{ total_amount }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-500">Payment Method</p>
+                                        <p class="font-medium text-gray-900">{{ payment_method }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Confirmation message -->
+                            <div class="prose prose-amber text-gray-500 text-left mx-auto">
+                                <p class="text-center">You'll receive a confirmation email with:</p>
+                                <ul class="list-disc pl-6">
+                                    <li>Booking details and receipt</li>
+                                    <li>Hotel contact information</li>
+                                    <li>Check-in instructions and amenities</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Action buttons -->
+                        <div class="mt-10 grid gap-4 sm:grid-cols-2 sm:gap-6 max-w-md mx-auto">
+                            <a href="{% url 'homepage' %}"
+                               class="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 transition-all duration-200 transform hover:-translate-y-1 shadow-lg hover:shadow-xl">
+                                <i class="fas fa-home mr-3 text-lg"></i>
+                                Home Page
+                            </a>
+                            <a href="{% url 'get_bookings' %}"
+                               class="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl text-black bg-gradient-to-r from-white-500 to-white-600 hover:from-white-600 hover:to-white-700 transition-all duration-200 transform hover:-translate-y-1 shadow-lg hover:shadow-xl">
+                                <i class="fas fa-calendar-check mr-3 text-lg"></i>
+                                My Bookings
+                            </a>
+                        </div>
+                        <!-- Additional options -->
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                                {% comment %} <button class="text-amber-600 hover:text-amber-700 font-medium flex items-center justify-center">
+                                    <i class="fas fa-download mr-2"></i>
+                                    Download Receipt
+                                </button>
+                                <span class="hidden sm:block text-gray-300">|</span> {% endcomment %}
+                                <a href="#"
+                                   class="text-gray-600 hover:text-gray-800 font-medium flex items-center justify-center">
+                                    <i class="fas fa-concierge-bell mr-2"></i>
+                                    Hotel Support
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer note -->
+                <div class="bg-gray-50 p-6 text-center text-sm text-gray-500">
+                    <p>Confirmation sent to {{ user_email }} • Transaction ID: {{ transaction_id }}</p>
+                    <p class="mt-2">{{ timestamp }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+    @keyframes pop-in {
+        0% { transform: scale(0.5); opacity: 0; }
+        80% { transform: scale(1.1); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop-in {
+        animation: pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    </style>
+{% endblock main %}
