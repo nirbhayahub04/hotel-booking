@@ -80,7 +80,7 @@ class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
         fields = [
-            "room_id",
+            "room_number",
             "room_type",
             "bed_configuration",
             "max_occupancy",
@@ -95,7 +95,7 @@ class RoomForm(forms.ModelForm):
             "accessibility_features",
         ]
         widgets = {
-            "room_id": forms.TextInput(
+            "room_number": forms.TextInput(
                 attrs={"class": COMMON_INPUT_CLASSES, "placeholder": _("Room ID")}
             ),
             "room_type": forms.Select(attrs={"class": COMMON_INPUT_CLASSES}),

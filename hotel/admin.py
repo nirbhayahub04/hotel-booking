@@ -61,14 +61,14 @@ class RoomModelAdmin(admin.ModelAdmin):
         "floor_number",
         "availability_status",
     )
-    search_fields = ("room_type", "room_id")
+    search_fields = ("room_type", "room_number")
     ordering = ("room_type",)
     fieldsets = (
         (
             "Room Details",
             {
                 "fields": (
-                    "room_id",
+                    "room_number",
                     "room_type",
                     "base_price",
                     "max_occupancy",

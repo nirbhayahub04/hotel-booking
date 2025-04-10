@@ -21,4 +21,19 @@ urlpatterns = [
         views.update_availibility,
         name="update_room_status",
     ),
+    path(
+        "client/dashboard/room/upload-image/<int:room_id>",
+        views.upload_room_images,
+        name="upload_room_images",
+    ),
+    path(
+        "client/dashboard/room/delete-image/<int:image_id>",
+        views.delete_room_image,
+        name="delete_room_image",
+    ),
+    path(
+        "client/dashboard/room/<int:room_id>/set-primary-image/<int:image_id>/",
+        views.set_primary_room_image,
+        name="set_primary_room_image",
+    ),
 ]

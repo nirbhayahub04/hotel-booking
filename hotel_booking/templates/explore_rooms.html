@@ -1,0 +1,157 @@
+{% extends "components/layout.html" %}
+{% load static hotel_tags %}
+{% block title %}
+    Explore
+{% endblock title %}
+{% block content %}
+    <div class="bg-gradient-to-b from-slate-50 to-white">
+        <!-- Hero Section -->
+        <section class="relative h-[400px] bg-[url('/staticfiles/img/hotel1.jpg')] bg-cover bg-center bg-no-repeat bg-fixed">
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-900/50 backdrop-blur-sm"></div>
+            <div class="relative h-full flex items-center justify-center text-center px-4">
+                <div class="max-w-4xl space-y-6">
+                    <h1 class="text-5xl font-bold text-white drop-shadow-xl animate-fade-in-down">Discover Your Perfect Stay</h1>
+                    <p class="text-xl text-slate-100/90 font-light">Explore our curated collection of luxurious accommodations</p>
+                </div>
+            </div>
+        </section>
+        <!-- Search & Content Section -->
+        <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <!-- Search Bar -->
+            <section class="mb-16 max-w-3xl mx-auto">
+                <form method="POST"
+                      action="{% url 'explore_rooms' %}"
+                      class="relative group">
+                    {% csrf_token %}
+                    <div class="flex shadow-xl rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+                        <input type="text"
+                               name="search"
+                               placeholder="Search by location, amenities, or room type..."
+                               class="flex-grow p-4 text-lg border-0 focus:ring-4 focus:ring-amber-300/50">
+                        <button type="submit"
+                                class="px-8 bg-amber-500 hover:bg-amber-600 text-white font-medium transition-colors duration-300 flex items-center gap-2">
+                            <i class="fas fa-search"></i>
+                            <span class="hidden sm:inline">Search</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+            <!-- Room Grid -->
+            <section>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {% for room in rooms %}
+                        <article class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group">
+                            <!-- Image Section -->
+                            <div class="relative h-72 overflow-hidden">
+                                <img src="{{ room.image.url }}"
+                                     alt="Luxury hotel room"
+                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                <!-- Price Badge -->
+                                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+                                    <span class="text-2xl font-bold text-amber-600">${{ room.base_price }}</span>
+                                    <span class="text-slate-500">/night</span>
+                                </div>
+                                <!-- Hotel Name -->
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900/70 p-6">
+                                    <h3 class="text-xl font-semibold text-white truncate">{{ room.hotel.hotel_name }}</h3>
+                                    <p class="text-slate-200/90 text-sm truncate">
+                                        <i class="fas fa-map-marker-alt mr-2"></i>
+                                        {{ room.hotel.address }}
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Details Section -->
+                            <div class="p-6 space-y-4">
+                                <!-- Room Info -->
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <h4 class="text-2xl font-bold text-slate-800">Room {{ room.room_number }}</h4>
+                                        <span class="flex items-center text-sm text-slate-500">
+                                            <i class="fas fa-users mr-2"></i>
+                                            {{ room.max_occupancy }} Guests
+                                        </span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="px-3 py-1 bg-slate-100 rounded-full text-sm text-slate-600">{{ room.get_room_type_display }}</span>
+                                        {% if room.accessibility_features %}
+                                            <span class="px-3 py-1 bg-blue-100 rounded-full text-sm text-blue-600">{{ room.accessibility_features }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <!-- Amenities -->
+                                <div class="grid grid-cols-2 gap-2 text-slate-600">
+                                    {% for amenity in room.amenities|split:","|slice:":4" %}
+                                        <div class="flex items-center gap-2 truncate">
+                                            <i class="fas fa-check-circle text-amber-500"></i>
+                                            <span class="text-sm">{{ amenity|title }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <!-- Action Buttons -->
+                                <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                                    <a href="{% url 'book_room' room_id=room.room_id %}"
+                                       class="flex-1 text-center py-3 px-6 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors duration-300 flex items-center justify-center gap-2">
+                                        <i class="fas fa-calendar-check"></i>
+                                        Book Now
+                                    </a>
+                                    <a href="{% url 'get_room_detail' room_id=room.room_id %}"
+                                       class="flex-1 text-center py-3 px-6 bg-white border-2 border-slate-200 hover:border-amber-400 text-slate-700 hover:text-amber-700 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2">
+                                        <i class="fas fa-info-circle"></i>
+                                        Details
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    {% empty %}
+                        <!-- Empty State -->
+                        <div class="col-span-full py-16 text-center">
+                            <div class="max-w-md mx-auto space-y-6">
+                                <div class="inline-block p-6 bg-amber-100 rounded-2xl">
+                                    <i class="fas fa-bed text-4xl text-amber-500"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-slate-800">No Rooms Available</h3>
+                                <p class="text-slate-500">We couldn't find any rooms matching your criteria. Try adjusting your search filters.</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- Pagination -->
+                {% if rooms.paginator.num_pages > 1 %}
+                    <nav class="mt-12 flex justify-center">
+                        <ul class="inline-flex items-center gap-2">
+                            {% if rooms.has_previous %}
+                                <li>
+                                    <a href="?page=1"
+                                       class="px-4 py-2 bg-white border border-slate-200 rounded-lg hover:bg-amber-50 text-slate-600">
+                                        <i class="fas fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="?page={{ rooms.previous_page_number }}"
+                                       class="px-4 py-2 bg-white border border-slate-200 rounded-lg hover:bg-amber-50 text-slate-600">
+                                        <i class="fas fa-angle-left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li class="px-4 py-2 text-slate-600">Page {{ rooms.number }} of {{ rooms.paginator.num_pages }}</li>
+                            {% if rooms.has_next %}
+                                <li>
+                                    <a href="?page={{ rooms.next_page_number }}"
+                                       class="px-4 py-2 bg-white border border-slate-200 rounded-lg hover:bg-amber-50 text-slate-600">
+                                        <i class="fas fa-angle-right"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="?page={{ rooms.paginator.num_pages }}"
+                                       class="px-4 py-2 bg-white border border-slate-200 rounded-lg hover:bg-amber-50 text-slate-600">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+{% endblock content %}

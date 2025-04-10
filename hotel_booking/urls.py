@@ -32,7 +32,8 @@ urlpatterns = [
     path("", include("payments.urls")),
     path("", views.index, name="homepage"),
     path("about/", views.about, name="about"),
-    path("explore", views.explore, name="explore"),
+    path("explore/rooms", views.explore_rooms, name="explore_rooms"),
+    path("explore/hotels", views.explore_hotels, name="explore_hotels"),
     path("settings/", views.settings, name="settings"),
 ]
 

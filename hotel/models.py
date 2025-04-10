@@ -165,22 +165,27 @@ class Room(models.Model):
     class Meta:
         verbose_name = _("Room")
         verbose_name_plural = _("Rooms")
-        ordering = ["room_id"]
+        ordering = ["room_number"]
         indexes = [
             models.Index(fields=["room_type"]),
             models.Index(fields=["availability_status"]),
         ]
 
     # Room Identification
-    room_id = models.CharField(
-        max_length=10,
-        unique=True,
+    room_id = models.BigAutoField(
         primary_key=True,
         verbose_name=_("Room ID"),
         help_text=_("Unique identifier for the room"),
     )
 
-    # Hotel Relationship
+    # Room Number
+    room_number = models.CharField(
+        max_length=10,
+        verbose_name=_("Room Number"),
+        help_text=_("Room Number of Hotel"),
+    )
+
+    # Hotel
     hotel = models.ForeignKey(
         Hotel,
         on_delete=models.CASCADE,

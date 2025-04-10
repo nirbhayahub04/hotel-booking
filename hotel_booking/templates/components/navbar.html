@@ -1,122 +1,76 @@
 {% load static %}
-
-<div class="flex w-full justify-between items-center py-8 px-8 sm:px-16 sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-white/20">
-	<a href="/"
-		class="flex-none"
-	>
-		<img width="128"
-			height="84"
-			src="{% static 'img/logo.png' %}"
-			alt="logo"
-		>
-	</a>
-	<div class="flex flex-col items-end">
-		<div class="flex gap-4 items-center justify-between">
-			<span class="hidden sm:flex gap-6">
-				<a class="hover-link"
-					href="/"
-				>Home</a>
-				<a class="hover-link"
-					href="{% url 'explore' %}"
-				>Explore</a>
-				<a
-					class="hover-link"
-					href="{% url 'about' %}"
-				>About</a>
-			</span>
-			{% if user.is_authenticated %}
-
-			<div class="relative">
-				<button onclick="toggleDropdown()"
-					class="bg-amber-400 flex gap-2 items-center border rounded-full p-4 transition hover:bg-amber-300 active:bg-amber-400"
-				>
-					<img src="{% static 'img/default-avatar.png' %}"
-						class="w-8 h-8 rounded-full"
-					>
-					<span>{{ user.username }}</span>
-					<i class="fa-solid fa-caret-down"></i>
-				</button>
-				<!-- Dropdown Menu -->
-				<div id="profile-dropdown"
-				class="hidden absolute right-0 mt-3 w-48 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-md z-10">
-					<ul class="py-2 text-gray-700">
-						<li>
-							<a href=""
-								class="block px-4 py-2 transition hover:bg-amber-400"
-							>
-								Profile
-							</a>
-						</li>
-						<li>
-							<a href="{% url "settings" %}"
-								class="block px-4 py-2 transition hover:bg-amber-400"
-							>
-								Settings
-							</a>
-						</li>
-						{% if user.role == "client" %}
-						<li>
-							<a href="{% url 'client-dashboard' %}"
-								class="block px-4 py-2 transition hover:bg-amber-400"
-							>
-								Dashboard
-							</a>
-						</li>
-						{% else %}
-						<li>
-							<a href="{% url "get_bookings" %}"
-								class="block px-4 py-2 transition hover:bg-amber-400"
-							>
-								Reservations
-							</a>
-						</li>
-						{% endif %}
-						<li>
-							<hr class="my-1">
-						</li>
-						<li>
-							<a href="{% url 'logout' %}"
-								class="block px-4 py-2 transition hover:bg-amber-400"
-							>
-								Logout
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-
-			{% else %}
-
-			<a href="{% url 'login' %}">
-				<button class="btn-primary">
-					Login
-				</button>
-			</a>
-			<a href="{% url 'register' %}">
-				<button class="btn-primary">
-					Register
-				</button>
-			</a>
-
-			{% endif %}
-		</div>
-
-		{% if not user.is_authenticated %}
-		<span class="text-xs mt-2 text-slate-600">
-			Want to Register as Hotel Owner?
-			<a class="hover-link text-amber-700 inline-block"
-				href="{% url 'register_client' %}"
-			>
-				Register now!
-			</a>
-		</span>
-		{% endif %}
-	</div>
+<div class="flex w-full justify-between items-center py-2 px-8 sm:px-16 sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-white/20">
+    <a href="/" class="flex-none">
+        <img width="256" height="256" src="{% static 'img/logo.png' %}" alt="logo">
+    </a>
+    <div class="flex flex-col items-end">
+        <div class="flex gap-4 items-center justify-between">
+            <span class="hidden sm:flex gap-6">
+                <a class="hover-link" href="/">Home</a>
+                <a class="hover-link" href="{% url 'explore_rooms' %}">Explore</a>
+                <a class="hover-link" href="{% url 'about' %}">About</a>
+            </span>
+            {% if user.is_authenticated %}
+                <div class="relative">
+                    <button onclick="toggleDropdown()"
+                            class="bg-amber-400 flex gap-2 items-center border rounded-full p-4 transition hover:bg-amber-300 active:bg-amber-400">
+                        <img src="{% static 'img/default-avatar.png' %}"
+                             class="w-8 h-8 rounded-full">
+                        <span>{{ user.username }}</span>
+                        <i class="fa-solid fa-caret-down"></i>
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <div id="profile-dropdown"
+                         class="hidden absolute right-0 mt-3 w-48 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-md z-10">
+                        <ul class="py-2 text-gray-700">
+                            <li>
+                                <a href="" class="block px-4 py-2 transition hover:bg-amber-400">Profile</a>
+                            </li>
+                            <li>
+                                <a href="{% url "settings" %}"
+                                   class="block px-4 py-2 transition hover:bg-amber-400">Settings</a>
+                            </li>
+                            {% if user.role == "client" %}
+                                <li>
+                                    <a href="{% url 'client-dashboard' %}"
+                                       class="block px-4 py-2 transition hover:bg-amber-400">Dashboard</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="{% url "get_bookings" %}"
+                                       class="block px-4 py-2 transition hover:bg-amber-400">Reservations</a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <hr class="my-1">
+                            </li>
+                            <li>
+                                <a href="{% url 'logout' %}"
+                                   class="block px-4 py-2 transition hover:bg-amber-400">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}">
+                    <button class="btn-primary">Login</button>
+                </a>
+                <a href="{% url 'register' %}">
+                    <button class="btn-primary">Register</button>
+                </a>
+            {% endif %}
+        </div>
+        {% if not user.is_authenticated %}
+            <span class="text-xs mt-2 text-slate-600">
+                Want to Register as Hotel Owner?
+                <a class="hover-link text-amber-700 inline-block"
+                   href="{% url 'register_client' %}">Register now!</a>
+            </span>
+        {% endif %}
+    </div>
 </div>
-
-
 {% block javascript %}
-<script>
+    <script>
 	function toggleDropdown() {
 		const dropdown = document.getElementById("profile-dropdown");
 		dropdown.classList.toggle("hidden");
@@ -131,5 +85,5 @@
 			dropdown.classList.add("hidden");
 		}
 	});
-</script>
+    </script>
 {% endblock javascript %}

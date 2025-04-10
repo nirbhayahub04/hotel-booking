@@ -5,31 +5,38 @@
 {% endblock title %}
 {% block content %}
     <div class="overflow-hidden">
-        <!-- Hero Section -->
-        <div class="relative w-full h-[600px] bg-[url('/staticfiles/img/hotel1.jpg')] bg-fixed bg-center bg-cover bg-no-repeat">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-slate-900/40 backdrop-blur-sm"></div>
+        <!-- Enhanced Hero Section -->
+        <div class="relative w-full h-[700px] bg-[url('/staticfiles/img/hotel1.jpg')] bg-fixed bg-center bg-cover bg-no-repeat">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/85 via-slate-900/50 to-transparent backdrop-blur-[2px]">
+            </div>
             <div class="relative h-full flex items-center justify-center">
                 <div class="text-center px-4 sm:px-6 py-16 max-w-4xl animate-fade-in-up">
-                    <h1 class="font-bold text-white text-4xl lg:text-6xl mb-6 leading-tight drop-shadow-xl">
-                        Discover Your <span class="text-amber-400">Perfect Escape</span>
+                    <div class="mb-8 animate-float">
+                        <i class="fas fa-hotel text-amber-400 text-6xl opacity-90"></i>
+                    </div>
+                    <h1 class="font-bold text-white text-4xl lg:text-6xl mb-6 leading-tight drop-shadow-2xl space-y-4">
+                        <span class="inline-block">Luxury Redefined,</span>
+                        <span class="inline-block bg-gradient-to-r from-amber-400 to-amber-300 bg-clip-text text-transparent">Experience Perfected</span>
                     </h1>
-                    <p class="text-gray-200 text-lg lg:text-xl mb-8 max-w-2xl mx-auto">
-                        Experience luxury redefined with our curated collection of premium stays
+                    <p class="text-gray-200 text-lg lg:text-xl mb-8 max-w-2xl mx-auto font-light leading-relaxed">
+                        Discover handpicked sanctuaries where elegance meets comfort
                     </p>
                     <form method="get"
                           action="{% url 'search' %}"
-                          class="flex justify-center items-center gap-4 max-w-2xl mx-auto">
-                        <div class="relative w-full">
-                            <input class="w-full border-2 border-white/20 rounded-full px-8 py-4 focus:outline-none focus:border-amber-400 bg-white/10 backdrop-blur-lg text-white placeholder-gray-300 text-lg transition-all duration-300 pr-16 hover:bg-white/15"
+                          class="flex justify-center items-center gap-4 max-w-2xl mx-auto transform hover:scale-[1.02] transition-transform duration-300">
+                        <div class="relative w-full group">
+                            <div class="absolute inset-0 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-400/10 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            </div>
+                            <input class="w-full border-2 border-white/30 rounded-full px-8 py-5 focus:outline-none focus:border-amber-400 bg-white/15 backdrop-blur-xl text-white placeholder-gray-300 text-lg transition-all duration-300 pr-20 hover:bg-white/20 focus:bg-white/25"
                                    type="text"
                                    name="q"
                                    id="search-bar"
                                    placeholder="Search destinations, hotels, or amenities..."
                                    required>
-                            <button class="absolute right-4 top-1/2 -translate-y-1/2 text-white flex items-center justify-center w-12 h-12 bg-amber-500 rounded-full hover:bg-amber-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-amber-500/30"
+                            <button class="absolute right-4 top-1/2 -translate-y-1/2 text-white flex items-center justify-center w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full hover:from-amber-600 hover:to-amber-700 transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-amber-500/30"
                                     type="submit"
                                     id="search-button">
-                                <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                                <i class="fa-solid fa-magnifying-glass text-xl"></i>
                             </button>
                         </div>
                     </form>
@@ -37,46 +44,52 @@
             </div>
         </div>
         <!-- Content Sections -->
-        <div class="p-6 sm:p-12 lg:p-16 xl:p-20 bg-gray-50">
-            <!-- Available Rooms -->
+        <div class="p-6 sm:p-12 lg:p-16 xl:p-20 bg-gray-50/50 lg:mx-32">
+            <!-- Featured Rooms Section -->
             <section class="mb-20">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
-                    <div class="space-y-2">
-                        <h2 class="font-bold text-3xl lg:text-4xl text-gray-800 relative inline-block">
-                            Featured Stays
-                            <span class="absolute bottom-0 left-0 w-full h-2 bg-amber-400/30 -mb-1"></span>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-4">
+                    <div class="space-y-3">
+                        <h2 class="font-bold text-3xl lg:text-4xl text-gray-800 relative inline-block pb-2">
+                            Curated Escapes
+                            <span class="absolute bottom-0 left-0 w-3/4 h-1.5 bg-amber-400/40 rounded-full"></span>
                         </h2>
-                        <p class="text-gray-600">Curated selection of premium rooms</p>
+                        <p class="text-gray-600 max-w-xl">Exquisite accommodations selected for exceptional experiences</p>
                     </div>
-                    <a href="{% url 'explore' %}"
-                       class="flex items-center gap-2 px-6 py-2.5 bg-white text-amber-600 rounded-full border border-amber-500/20 hover:border-amber-500/40 hover:bg-amber-50 transition-all duration-300 shadow-sm hover:shadow-md">
-                        Explore All
-                        <i class="fas fa-arrow-right text-sm -mr-1"></i>
+                    <a href="{% url 'explore_rooms' %}"
+                       class="button-glow flex items-center gap-2 px-7 py-3 bg-white text-amber-600 rounded-full border border-amber-500/20 hover:border-amber-500/40 hover:bg-amber-50 transition-all duration-300 shadow-sm hover:shadow-md group">
+                        <span>View Collection</span>
+                        <i class="fas fa-arrow-right text-sm transform group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-10">
                     {% for room in rooms %}
-                        <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.015] overflow-hidden group relative">
-                            <div class="relative aspect-video overflow-hidden">
+                        <article class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.015] overflow-hidden group relative isolate">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                            </div>
+                            <div class="relative aspect-[4/3] overflow-hidden">
                                 <img src="{{ room.image.url }}"
                                      alt="{{ room.room_type }} at {{ room.hotel.hotel_name }}"
                                      class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
                                      loading="lazy">
-                                <div class="absolute top-4 right-4 flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-                                    <span class="text-amber-600 font-bold text-lg">${{ room.base_price }}</span>
-                                    <span class="text-gray-500 text-sm">/night</span>
+                                <div class="absolute top-4 right-4 flex items-center gap-2 bg-white/95 backdrop-blur px-4 py-2.5 rounded-full shadow-sm">
+                                    <span class="text-amber-600 font-bold text-xl">${{ room.base_price }}</span>
+                                    <span class="text-gray-500 text-sm -mr-1">/night</span>
                                 </div>
-                                <div class="absolute bottom-4 left-4">
-                                    <span class="px-3 py-1 bg-amber-500 text-white rounded-full text-sm font-medium">
+                                <div class="absolute bottom-4 left-4 flex gap-2">
+                                    <span class="px-3 py-1.5 bg-amber-500/95 text-white rounded-full text-sm font-medium shadow-sm">
                                         {{ room.get_room_type_display }}
+                                    </span>
+                                    <span class="px-3 py-1.5 bg-white/95 backdrop-blur text-gray-600 rounded-full text-sm font-medium shadow-sm flex items-center gap-1.5">
+                                        <i class="fas fa-star text-amber-400 text-sm"></i>
+                                        4.8
                                     </span>
                                 </div>
                             </div>
-                            <div class="p-6 lg:p-7 space-y-4">
-                                <div class="space-y-2">
-                                    <h3 class="text-xl font-bold text-gray-800">
+                            <div class="p-6 lg:p-7 space-y-5">
+                                <div class="space-y-3">
+                                    <h3 class="text-2xl font-bold text-gray-800 leading-tight">
                                         {{ room.hotel.hotel_name }}
-                                        <span class="text-gray-500 font-normal">• Room {{ room.room_id }}</span>
+                                        <span class="text-gray-500 font-normal block text-lg mt-1">Suite {{ room.room_number }}</span>
                                     </h3>
                                     <div class="flex items-center gap-2 text-gray-600">
                                         <i class="fas fa-map-marker-alt text-amber-500 text-sm"></i>
@@ -84,95 +97,96 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap gap-3">
-                                    <div class="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
+                                    <div class="flex items-center gap-2 bg-gray-50/70 backdrop-blur px-3.5 py-2 rounded-xl">
                                         <i class="fas fa-users text-amber-500 text-sm"></i>
                                         <span class="text-gray-600 text-sm">{{ room.max_occupancy }} Guests</span>
                                     </div>
-                                    {% if room.amenities %}
-                                        {% for amenity in room.amenities|split:","|slice:":2" %}
-                                            <div class="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg">
-                                                <i class="fas fa-check-circle text-amber-500 text-sm"></i>
-                                                <span class="text-gray-600 text-sm">{{ amenity|title }}</span>
-                                            </div>
-                                        {% endfor %}
-                                    {% endif %}
+                                    {% for amenity in room.amenities|split:","|slice:":2" %}
+                                        <div class="flex items-center gap-2 bg-gray-50/70 backdrop-blur px-3.5 py-2 rounded-xl">
+                                            <i class="fas fa-wifi text-amber-500 text-sm"></i>
+                                            <span class="text-gray-600 text-sm">{{ amenity|title }}</span>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <a href="{% url 'book_room' room.room_id %}"
-                                   class="inline-flex w-full items-center justify-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow-md hover:gap-3">
-                                    Book Now
-                                    <i class="fas fa-arrow-right text-sm"></i>
+                                   class="inline-flex w-full items-center justify-center gap-2 px-6 py-3.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow-md hover:gap-3 group/button">
+                                    <span>Reserve Suite</span>
+                                    <i class="fas fa-arrow-right text-sm transform group-hover/button:translate-x-1 transition-transform"></i>
                                 </a>
                             </div>
-                        </div>
+                        </article>
                     {% empty %}
-                        <div class="col-span-full text-center py-16 space-y-4">
-                            <div class="inline-flex bg-amber-50 p-6 rounded-2xl">
-                                <i class="fas fa-bed text-amber-400 text-5xl"></i>
+                        <div class="col-span-full text-center py-16 space-y-6">
+                            <div class="inline-flex bg-amber-50 p-6 rounded-2xl animate-pulse">
+                                <i class="fas fa-bed text-amber-400 text-6xl"></i>
                             </div>
-                            <p class="text-gray-600 text-lg">No available rooms at the moment</p>
+                            <p class="text-gray-600 text-xl font-light">Curating exceptional stays... check back soon</p>
                         </div>
                     {% endfor %}
                 </div>
             </section>
-            <!-- Featured Hotels -->
+            <!-- Premier Hotels Section -->
             <section>
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
-                    <div class="space-y-2">
-                        <h2 class="font-bold text-3xl lg:text-4xl text-gray-800 relative inline-block">
-                            Premier Hotels
-                            <span class="absolute bottom-0 left-0 w-full h-2 bg-amber-400/30 -mb-1"></span>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-4">
+                    <div class="space-y-3">
+                        <h2 class="font-bold text-3xl lg:text-4xl text-gray-800 relative inline-block pb-2">
+                            Iconic Hotels
+                            <span class="absolute bottom-0 left-0 w-3/4 h-1.5 bg-amber-400/40 rounded-full"></span>
                         </h2>
-                        <p class="text-gray-600">Luxury destinations worth experiencing</p>
+                        <p class="text-gray-600 max-w-xl">Landmark properties defining luxury hospitality</p>
                     </div>
-                    <a href="{% url 'explore' %}"
-                       class="flex items-center gap-2 px-6 py-2.5 bg-white text-amber-600 rounded-full border border-amber-500/20 hover:border-amber-500/40 hover:bg-amber-50 transition-all duration-300 shadow-sm hover:shadow-md">
-                        Explore All
-                        <i class="fas fa-arrow-right text-sm -mr-1"></i>
+                    <a href="{% url 'explore_hotels' %}"
+                       class="button-glow flex items-center gap-2 px-7 py-3 bg-white text-amber-600 rounded-full border border-amber-500/20 hover:border-amber-500/40 hover:bg-amber-50 transition-all duration-300 shadow-sm hover:shadow-md group">
+                        <span>Discover More</span>
+                        <i class="fas fa-arrow-right text-sm transform group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-10">
                     {% for hotel in hotels %}
-                        <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.015] overflow-hidden group">
-                            <div class="relative aspect-video overflow-hidden">
+                        <article class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.015] overflow-hidden group relative isolate">
+                            <div class="relative aspect-[4/3] overflow-hidden">
                                 <img src="{{ hotel.image.url }}"
                                      alt="{{ hotel.hotel_name }}"
                                      class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
                                      loading="lazy">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent"></div>
-                                <div class="absolute bottom-4 left-4 right-4">
-                                    <div class="flex items-center justify-between">
-                                        <h3 class="text-xl font-bold text-white">{{ hotel.hotel_name }}</h3>
-                                        <div class="flex items-center gap-1 bg-white/20 backdrop-blur-sm px-2.5 py-1 rounded-full">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent"></div>
+                                <div class="absolute bottom-5 left-5 right-5">
+                                    <div class="flex items-center justify-between backdrop-blur-sm bg-white/20 p-3.5 rounded-2xl">
+                                        <h3 class="text-xl font-bold text-white truncate">{{ hotel.hotel_name }}</h3>
+                                        <div class="flex items-center gap-1.5 bg-white/20 px-3 py-1.5 rounded-full">
                                             <i class="fas fa-star text-amber-400 text-sm"></i>
                                             <span class="text-white text-sm font-medium">{{ hotel.star_rating }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="p-6 lg:p-7 space-y-4">
+                            <div class="p-6 lg:p-7 space-y-5">
                                 <div class="flex items-center gap-2 text-gray-600">
                                     <i class="fas fa-map-marker-alt text-amber-500"></i>
                                     <span class="text-sm">{{ hotel.city }}, {{ hotel.country }}</span>
                                 </div>
-                                <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">{{ hotel.description }}</p>
-                                <div class="flex flex-wrap gap-2">
+                                <p class="text-gray-600 text-sm leading-relaxed line-clamp-3 font-light">{{ hotel.description }}</p>
+                                <div class="flex flex-wrap gap-2.5">
                                     {% for facility in hotel.facilities|split:","|slice:":3" %}
-                                        <span class="px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full text-sm">{{ facility|title }}</span>
+                                        <span class="px-3 py-1.5 bg-gray-50/70 backdrop-blur text-gray-600 rounded-full text-sm flex items-center gap-1.5">
+                                            <i class="fas fa-spa text-amber-500 text-sm"></i>
+                                            {{ facility|title }}
+                                        </span>
                                     {% endfor %}
                                 </div>
                                 <a href="{% url 'hotel_detail' hotel.hotel_id %}"
-                                   class="inline-flex w-full items-center justify-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow-md hover:gap-3">
-                                    Explore Hotel
-                                    <i class="fas fa-arrow-right text-sm"></i>
+                                   class="inline-flex w-full items-center justify-center gap-2 px-6 py-3.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-all duration-300 font-medium shadow-sm hover:shadow-md hover:gap-3 group/button">
+                                    <span>Explore Property</span>
+                                    <i class="fas fa-arrow-right text-sm transform group-hover/button:translate-x-1 transition-transform"></i>
                                 </a>
                             </div>
-                        </div>
+                        </article>
                     {% empty %}
-                        <div class="col-span-full text-center py-16 space-y-4">
-                            <div class="inline-flex bg-amber-50 p-6 rounded-2xl">
-                                <i class="fas fa-hotel text-amber-400 text-5xl"></i>
+                        <div class="col-span-full text-center py-16 space-y-6">
+                            <div class="inline-flex bg-amber-50 p-6 rounded-2xl animate-pulse">
+                                <i class="fas fa-hotel text-amber-400 text-6xl"></i>
                             </div>
-                            <p class="text-gray-600 text-lg">No hotels available at the moment</p>
+                            <p class="text-gray-600 text-xl font-light">Discovering new horizons... please check back</p>
                         </div>
                     {% endfor %}
                 </div>
@@ -180,27 +194,40 @@
         </div>
     </div>
     <style>
-        .animate-fade-in-up {
-            animation: fadeInUp 0.8s ease-out;
-        }
-        
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .aspect-video {
-            aspect-ratio: 16/9;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
-        
+        @keyframes buttonGlow {
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+            100% { box-shadow: 0 0 0 15px rgba(245, 158, 11, 0); }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        .button-glow:hover {
+            animation: buttonGlow 1.5s infinite;
+        }
+
+        .backdrop-blur {
+            backdrop-filter: blur(8px);
+        }
         .shadow-gradient {
-            box-shadow: 0 8px 32px rgba(251, 191, 36, 0.15);
+            box-shadow: 0 15px 50px -12px rgba(245, 158, 11, 0.25);
+        }
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
     </style>
 {% endblock content %}

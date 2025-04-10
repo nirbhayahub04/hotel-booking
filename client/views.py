@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from client.forms import RoomForm
-from hotel.models import Hotel, Room
+from hotel.forms import RoomImageForm
+from hotel.models import Hotel, Room, RoomImage
 from hotel_booking.decorators import client_or_superuser_required
 
 
@@ -31,11 +32,17 @@ def room(request):
     hotel = Hotel.objects.filter(owner=request.user).first()
 
     if request.method == "POST":
-        form = RoomForm(request.POST)
+        form = RoomForm(request.POST, request.FILES)
         if form.is_valid():
             room = form.save(commit=False)
             room.hotel = hotel
             room.save()
+
+            # Save multiple images
+            images = request.FILES.getlist("images")
+            for image in images:
+                RoomImage.objects.create(room=room, image=image)
+
             return redirect("get_rooms")
 
         print(form.errors)
@@ -90,3 +97,50 @@ def update_availibility(request, room_id):
         room.save()
 
         return redirect("get_rooms")
+
+
+@client_or_superuser_required
+def upload_room_images(request, room_id):
+    room = get_object_or_404(Room, room_id=room_id)
+    if request.method == "POST":
+        form = RoomImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            images = form.cleaned_data["images"]
+            for image in images:
+                RoomImage.objects.create(room=room, image=image)
+            if room.image == "images/rooms/default.jpg":
+                random_image = (
+                    RoomImage.objects.filter(room=room)
+                    .exclude(image="images/rooms/default.jpg")
+                    .order_by("?")
+                    .first()
+                )
+                if random_image:
+                    room.image = random_image.image
+                    room.save()
+            return redirect("get_rooms")
+    else:
+        form = RoomImageForm()
+
+    return render(
+        request, "client/forms/upload_room_images.html", {"form": form, "room": room}
+    )
+
+
+@client_or_superuser_required
+def delete_room_image(request, image_id):
+    image = get_object_or_404(RoomImage, id=image_id)
+    image.delete()
+    return redirect("get_rooms")
+
+
+@client_or_superuser_required
+def set_primary_room_image(request, room_id, image_id):
+    room = get_object_or_404(Room, room_id=room_id)
+    primary_image = get_object_or_404(RoomImage, id=image_id)
+
+    # Update the room's primary image
+    room.image = primary_image.image
+    room.save()
+
+    return redirect("get_rooms")

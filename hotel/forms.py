@@ -170,7 +170,6 @@ class PoliciesForm(forms.Form):
     )
 
 
-
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 
@@ -204,4 +203,19 @@ class HotelImageForm(forms.Form):
             }
         ),
         label="Hotel Images",
+    )
+
+
+class RoomImageForm(forms.Form):
+    images = MultipleFileField(
+        widget=MultipleFileInput(
+            attrs={
+                "type": "file",
+                "name": "images",
+                "accept": "image/*",
+                "multiple": "multiple",
+                "class": "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100",
+            }
+        ),
+        label="Room Images",
     )
