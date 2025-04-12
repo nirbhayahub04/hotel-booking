@@ -10,27 +10,21 @@
                 Hotel Booking Dashboard
             {% endblock title %}
         </title>
-        <meta name="description"
-              content="Hotel Booking Management System - Manage your hotel operations efficiently">
-        <meta name="keywords"
-              content="hotel, booking, management, dashboard, reservations">
         {% include "client/includes/head.html" %}
     </head>
     <body class="min-h-screen bg-gray-100 flex flex-col">
         <!-- Mobile Sidebar Overlay -->
         <div id="sidebar-overlay"
              class="fixed inset-0 z-40 bg-black/50 lg:hidden hidden"></div>
+        {% include "client/includes/navigation.html" %}
         <div class="flex flex-1">
             {% include "client/includes/sidebar.html" %}
-            <div class="flex flex-col flex-1">
-                {% include "client/includes/navigation.html" %}
-                <main class="flex-1 p-6 lg:p-8 transition-all duration-300">
-                    <div class="max-w-7xl mx-auto">
-                        {% block content %}
-                        {% endblock content %}
-                    </div>
-                </main>
-            </div>
+            <main class="flex-1 p-6 lg:p-8 transition-all duration-300">
+                <div class="max-w-7xl mx-auto">
+                    {% block content %}
+                    {% endblock content %}
+                </div>
+            </main>
         </div>
         <script>
             // Mobile sidebar toggle

@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from client.forms import RoomForm
 from hotel.forms import RoomImageForm
-from hotel.models import Hotel, Room, RoomImage
+from hotel.models import Hotel, Reservation, Room, RoomImage
 from hotel_booking.decorators import client_or_superuser_required
 
 
@@ -144,3 +144,31 @@ def set_primary_room_image(request, room_id, image_id):
     room.save()
 
     return redirect("get_rooms")
+
+
+@client_or_superuser_required
+def client_booked_rooms(request):
+    booked_rooms = Reservation.objects.filter(
+        hotel__owner=request.user,
+        room__availability_status="BOOKED",
+    ).select_related("room", "hotel")
+    return render(request, "client/booked_rooms.html", {"rooms": booked_rooms})
+
+
+@client_or_superuser_required
+def client_billing_history(request):
+    billing_records = (
+        Reservation.objects.filter(hotel__owner=request.user)
+        .select_related(
+            "payment_ref_id",
+            "room",
+            "user",
+        )
+        .order_by("-booking_date")
+    )  # Show most recent first
+
+    return render(
+        request,
+        "client/billing_history.html",
+        {"billing_records": billing_records, "total_records": billing_records.count()},
+    )

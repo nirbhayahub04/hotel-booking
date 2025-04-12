@@ -32,6 +32,9 @@ def payment_success(request):
     if not reservation:
         return render(request, "500.html")
 
+    room.availability_status = "BOOKED"
+    room.save()
+
     # Prepare context data
     context = {
         "hotel_name": room.hotel.hotel_name,

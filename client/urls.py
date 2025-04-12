@@ -36,4 +36,14 @@ urlpatterns = [
         views.set_primary_room_image,
         name="set_primary_room_image",
     ),
+    path(
+        "client/dashboard/booked-rooms",
+        views.client_booked_rooms,
+        name="client_booked_rooms",
+    ),
+    path(
+        "client/dashboard/billing-history",
+        views.client_billing_history,
+        name="client_billing_history",
+    ),
 ]

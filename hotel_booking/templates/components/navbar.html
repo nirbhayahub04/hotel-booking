@@ -11,6 +11,12 @@
                 <a class="hover-link" href="{% url 'about' %}">About</a>
             </span>
             {% if user.is_authenticated %}
+                <!-- User Type Chip -->
+                {% if user.role == "client" %}
+                    <span class="ml-2 text-xs bg-amber-200 text-amber-800 rounded-full px-2 py-1">Hotel Owner</span>
+                {% elif user.is_superuser %}
+                    <span class="ml-2 text-xs bg-red-200 text-red-800 rounded-full px-2 py-1">Admin</span>
+                {% endif %}
                 <div class="relative">
                     <button onclick="toggleDropdown()"
                             class="bg-amber-400 flex gap-2 items-center border rounded-full p-4 transition hover:bg-amber-300 active:bg-amber-400">
