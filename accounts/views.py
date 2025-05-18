@@ -36,7 +36,7 @@ def login_view(request):
                 if user.role == "client":
                     if Hotel.objects.filter(owner=user).exists():
                         return redirect("/")
-                    return redirect("register_hotel")
+                    return redirect("hotel_signup")
 
                 return redirect("/")
             msg = "Invalid credentials"

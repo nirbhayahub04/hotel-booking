@@ -1,13 +1,17 @@
 import base64
+from email.mime.text import MIMEText
 import hashlib
 import hmac
 import json
+import os
+import smtplib
 import requests
 from uuid import uuid1, uuid4
 from datetime import datetime
 
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.cache import cache
+from django.views.decorators.csrf import csrf_exempt
 
 from accounts.models import CustomUser
 from hotel.models import Reservation, Room
@@ -21,7 +25,6 @@ def payment_success(request):
         return render(request, "404.html")
 
     user = get_object_or_404(CustomUser, id=booking_data["initiated_by"])
-    # Get room and reservation details
     room = get_object_or_404(Room, room_id=booking_data["room_id"])
     reservation = Reservation.objects.filter(
         room=room,
@@ -35,14 +38,13 @@ def payment_success(request):
     room.availability_status = "BOOKED"
     room.save()
 
-    # Prepare context data
     context = {
         "hotel_name": room.hotel.hotel_name,
         "booking_number": reservation.reservation_id,
         "check_in": booking_data["check_in"],
         "check_out": booking_data["check_out"],
         "total_amount": room.base_price,
-        "payment_method": booking_data.get("payment_method", "Credit Card"),
+        "payment_method": "E-Banking",
         "user_email": user.email,
         "transaction_id": str(uuid4()),
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -67,6 +69,7 @@ def generate_signature(msg):
     return signature
 
 
+@csrf_exempt
 def esewa_initiate(request):
     cache_data = cache.get("booking_data")
     if not cache_data:
@@ -113,6 +116,7 @@ def esewa_initiate(request):
     return render(request, "500.html")
 
 
+@csrf_exempt
 def esewa_verify(request):
     if request.method == "GET":
         encoded_data = request.GET.get("data")
@@ -159,6 +163,7 @@ def esewa_verify(request):
                         payment_ref_id=payment,
                         payment_status=Reservation.PaymentStatus.PAID,
                     )
+                    send_email(user, booking_data, transaction_id)
 
                     return redirect("payment_success")
             except Exception as e:
@@ -168,6 +173,7 @@ def esewa_verify(request):
     return redirect("payment_failure")
 
 
+@csrf_exempt
 def khalti_initiate(request):
     cache_data = cache.get("booking_data")
     if cache_data == None:
@@ -219,6 +225,7 @@ def khalti_initiate(request):
     return render(request, "500.html")
 
 
+@csrf_exempt
 def khalti_verify(request):
     if request.method == "GET":
         status = request.GET.get("status", "Failed")
@@ -265,9 +272,47 @@ def khalti_verify(request):
                     payment_status=Reservation.PaymentStatus.PAID,
                 )
 
+                # Send confirmation email to user
+                send_email(user, booking_data, transaction_id)
+
                 return redirect("payment_success")
             except Exception as e:
                 print(f"Error: {e}")
                 return render(request, "500.html")
 
     return redirect("payment_failure")
+
+
+def send_email(user, booking_data, transaction_id):
+    """Send booking confirmation email to user"""
+    try:
+        from_email = os.getenv("EMAIL_USER")
+        to_email = user.email
+        subject = f"Booking Confirmation - {booking_data.get('room_id')}"
+
+        body = f"""
+        Dear {user.get_full_name()},
+        
+        Your hotel booking has been confirmed.
+        
+        Booking Details:
+        - Room: {booking_data.get('room_id')}
+        - Check-in: {booking_data.get('check_in')}
+        - Check-out: {booking_data.get('check_out')}
+        - Guests: {booking_data.get('no_of_guest')}
+        - Transaction ID: {transaction_id}
+        
+        Thank you for choosing us!
+        """
+
+        msg = MIMEText(body)
+        msg["Subject"] = subject
+        msg["From"] = from_email
+        msg["To"] = to_email
+
+        with smtplib.SMTP(os.getenv("SMTP_SERVER"), os.getenv("SMTP_PORT")) as server:
+            server.starttls()
+            server.login(from_email, os.getenv("EMAIL_PASSWORD"))
+            server.send_message(msg)
+    except Exception as e:
+        print(f"Failed to send email: {e}")

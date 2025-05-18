@@ -46,4 +46,29 @@ urlpatterns = [
         views.client_billing_history,
         name="client_billing_history",
     ),
+    path(
+        "client/dashboard/hotel-information",
+        views.hotel_information,
+        name="hotel_information",
+    ),
+    path(
+        "client/dashboard/edit-hotel-information",
+        views.edit_hotel_information,
+        name="edit_hotel",
+    ),
+    path(
+        "client/dashboard/set-primary-hotel-image/<int:image_id>",
+        views.set_primary_hotel_image,
+        name="set_primary_hotel_image",
+    ),
+    path(
+        "client/dashboard/delete-hotel-image/<int:image_id>",
+        views.delete_hotel_image,
+        name="delete_hotel_image",
+    ),
+    path(
+        "client/dashboard/upload-hotel-images",
+        views.upload_hotel_images,
+        name="upload_hotel_images",
+    ),
 ]

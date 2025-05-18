@@ -219,3 +219,48 @@ class RoomImageForm(forms.Form):
         ),
         label="Room Images",
     )
+
+
+class FullForm(forms.ModelForm):
+    class Meta:
+        model = Hotel
+        fields = [
+            "hotel_name",
+            "description",
+            "phone_number",
+            "email",
+            "website",
+            "star_rating",
+            "address",
+            "city",
+            "country",
+            "postal_code",
+            "check_in_time",
+            "check_out_time",
+            "amenities",
+        ]
+        widgets = {
+            "hotel_name": forms.TextInput(attrs={"class": COMMON_INPUT_CLASSES}),
+            "description": forms.Textarea(attrs={"class": TEXTAREA_CLASSES, "rows": 3}),
+            "phone_number": forms.TextInput(attrs={"class": COMMON_INPUT_CLASSES}),
+            "email": forms.EmailInput(attrs={"class": COMMON_INPUT_CLASSES}),
+            "website": forms.URLInput(attrs={"class": COMMON_INPUT_CLASSES}),
+            "star_rating": forms.NumberInput(attrs={"class": COMMON_INPUT_CLASSES}),
+            "address": forms.TextInput(attrs={"class": COMMON_INPUT_CLASSES}),
+            "city": forms.TextInput(attrs={"class": COMMON_INPUT_CLASSES}),
+            "country": forms.TextInput(attrs={"class": COMMON_INPUT_CLASSES}),
+            "postal_code": forms.TextInput(attrs={"class": COMMON_INPUT_CLASSES}),
+            "check_in_time": forms.TimeInput(
+                attrs={"class": COMMON_INPUT_CLASSES, "type": "time"}
+            ),
+            "check_out_time": forms.TimeInput(
+                attrs={"class": COMMON_INPUT_CLASSES, "type": "time"}
+            ),
+            "amenities": forms.Textarea(
+                attrs={
+                    "class": TEXTAREA_CLASSES,
+                    "rows": 2,
+                    "placeholder": "Comma separated list of amenities",
+                }
+            ),
+        }

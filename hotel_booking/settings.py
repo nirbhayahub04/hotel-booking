@@ -10,12 +10,42 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
+import environ
 from pathlib import Path
 
 from django.conf.global_settings import STATICFILES_DIRS
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, True)
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "khalti.com",
+    "esewa.com",
+    "rc-epay.esewa.com.np",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1",
+    "http://localhost",
+    "https://rc-epay.esewa.com.np",
+    "https://esewa.com.np",
+]
+
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True  # Required for 'None'
+
+SESSION_COOKIE_AGE = 86400  # 1 day
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -54,13 +84,6 @@ SECRET_KEY = "django-insecure-4x*ks%6l_@n3oa#%zc_*l+39v!2@%^#5fs0po2k5o44!2" "-4
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
 
 APPEND_SASH = True
 AUTH_USER_MODEL = "accounts.CustomUser"

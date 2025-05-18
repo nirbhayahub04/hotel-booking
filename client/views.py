@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from client.forms import RoomForm
-from hotel.forms import RoomImageForm
-from hotel.models import Hotel, Reservation, Room, RoomImage
+from hotel.forms import BasicInformationForm, FullForm, HotelImageForm, RoomImageForm
+from hotel.models import Hotel, HotelImage, Reservation, Room, RoomImage
 from hotel_booking.decorators import client_or_superuser_required
 
 
@@ -172,3 +172,84 @@ def client_billing_history(request):
         "client/billing_history.html",
         {"billing_records": billing_records, "total_records": billing_records.count()},
     )
+
+
+@client_or_superuser_required
+def hotel_information(request):
+    hotel = get_object_or_404(Hotel, owner=request.user)
+    hotel_images = HotelImage.objects.filter(hotel=hotel)
+    return render(
+        request,
+        "client/hotel_information.html",
+        {"hotel": hotel, "hotel_images": hotel_images},
+    )
+
+
+@client_or_superuser_required
+def edit_hotel_information(request):
+    hotel = get_object_or_404(Hotel, owner=request.user)
+
+    if request.method == "POST":
+        form = FullForm(request.POST, instance=hotel)
+        if form.is_valid():
+            form.save()
+            return redirect("hotel_information")
+    else:
+        form = FullForm(instance=hotel)
+
+    return render(
+        request, "client/edit_hotel_information.html", {"form": form, "hotel": hotel}
+    )
+
+
+@client_or_superuser_required
+def set_primary_hotel_image(request, image_id):
+    hotel = get_object_or_404(Hotel, owner=request.user)
+    image = get_object_or_404(HotelImage, id=image_id, hotel=hotel)
+
+    # Set all images to not primary first
+    HotelImage.objects.filter(hotel=hotel).update(is_primary=False)
+
+    # Set selected image as primary
+    image.is_primary = True
+    image.save()
+
+    # Update hotel's main image field
+    hotel.image = image.image
+    hotel.save()
+
+    return redirect("hotel_information")
+
+
+@client_or_superuser_required
+def delete_hotel_image(request, image_id):
+    hotel = get_object_or_404(Hotel, owner=request.user)
+    image = get_object_or_404(HotelImage, id=image_id, hotel=hotel)
+
+    # Check if this is the primary image
+    was_primary = image.is_primary
+
+    image.image.delete()
+    image.delete()
+
+    if was_primary:
+        remaining_images = HotelImage.objects.filter(hotel=hotel)
+        if remaining_images.exists():
+            new_primary = remaining_images.first()
+            new_primary.is_primary = True
+            new_primary.save()
+
+    return redirect("hotel_information")
+
+
+@client_or_superuser_required
+def upload_hotel_images(request):
+    hotel = get_object_or_404(Hotel, owner=request.user)
+
+    if request.method == "POST":
+        images = request.FILES.getlist("images")
+        for image in images:
+            HotelImage.objects.create(hotel=hotel, image=image)
+        return redirect("hotel_information")
+
+    return render(request, "client/upload_hotel_images.html")
