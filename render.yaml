@@ -1,7 +1,9 @@
 services:
   - type: web
     name: hotel-booking
-    runtime: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn hotel_booking.wsgi"
-    pythonVersion: 3.11.9
+    env: python
+    buildCommand: "./env/bin/pip install -r requirements.txt"
+    startCommand: "./env/bin/gunicorn hotel_booking.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
