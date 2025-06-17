@@ -2,8 +2,10 @@ services:
   - type: web
     name: hotel-booking
     runtime: python
-    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
-    startCommand: gunicorn hotel_booking.wsgi:application --bind 0.0.0.0:$PORT
+    buildCommand: |
+      pip install --upgrade pip setuptools wheel
+      pip install -r requirements.txt
+    startCommand: gunicorn hotel_booking.wsgi:application
     envVars:
       - key: PYTHON_VERSION
-        value: "3.10"
+        value: 3.10
