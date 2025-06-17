@@ -1,10 +1,9 @@
 services:
   - type: web
     name: hotel-booking
-    env: python
-    buildCommand: "./.render/build.sh"
-    startCommand: "gunicorn hotel_booking.wsgi:application"
+    runtime: python
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: gunicorn hotel_booking.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
-      - key: DJANGO_SETTINGS_MODULE
-        value: hotel_booking.settings
-
+      - key: PYTHON_VERSION
+        value: "3.10"
