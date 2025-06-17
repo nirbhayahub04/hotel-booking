@@ -13,7 +13,7 @@ Faker==35.2.0
 fontawesomefree==6.6.0
 idna==3.10
 Markdown==3.7
-mysqlclient==2.2.6
+mysql-connector-python==8.3.0
 oauthlib==3.2.2
 pillow==11.1.0
 pycparser==2.22
