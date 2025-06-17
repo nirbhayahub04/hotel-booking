@@ -25,7 +25,7 @@ SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_AGE = 86400
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = env("django-insecure-4x*ks%6l_@n3oa#%zc_*l+39v!2@%^#5fs0po2k5o44!2" "-44ni")
 
 APPEND_SASH = True
 AUTH_USER_MODEL = "accounts.CustomUser"
