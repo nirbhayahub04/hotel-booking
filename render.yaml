@@ -2,6 +2,9 @@ services:
   - type: web
     name: hotel-booking
     env: python
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "./.render/build.sh"
     startCommand: "gunicorn hotel_booking.wsgi:application"
-    pythonVersion: 3.10
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: hotel_booking.settings
+
